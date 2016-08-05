@@ -2,35 +2,53 @@ STT Collection Manager
 Author: August Enzelberger
 Project Homepage: https://github.com/augustenz/STT-Collection-Manager
 
-STT Collection manager is a Java application, developed to help manage a Crew collection for Disruptor Beam's Star Trek Timelines game.
+STT Collection Manager is a Java application, developed to help manage a Crew collection for Disruptor Beam's Star Trek Timelines game.
 
-It consists of multiple tabs:
+=====================================================================
+Important Info
+
+This application needs the latest JRE (Java Runtime Environment) to run, it is available for various systems and can be obtained
+from www.oracle.com (or https://java.com/en/download/).
+
+JavaFX is used by this application to display charts, it is included in Oracle's JRE so nothing else is needed if that JRE is installed.
+Other JREs (like OpenJDK in Linux) need extra packages (like OpenJFX in Linux) to run Java applications that contain JavaFX elements.
+In that case either the extra packages can be installed, or Oracle's JRE.
+JavaFX is required to run this application.
+
+=====================================================================
+STT Collection Manager consists of multiple tabs:
 
 1) The Collection tab
 
-This tab contains the Crew Collection table. Here all crew that is currently in the collection can be edited. The editable fields are all the skill fields, the fused stars field, the level field, the quantity field (in case of multiples) and a checkbox that removes crew from the collection.
+This tab contains the Crew Collection table. Here all crew that is currently in the collection can be edited. The editable fields are all the skill fields,
+the fused stars field, the level field, the quantity field (in case of multiples) and a checkbox that removes crew from the collection.
 Clicking on a column header will sort the table according to that column (this setting is saved).
 Clicking on the Crew Name field, Race field or any of the Traits in the traits field will open the corresponding wiki page.
+Right-clicking on crew members brings up a menu that allows to make a copy of the selected crew member (multiples but with different stats).
 
 2) The Crew tab
 
-This tab contains the Crew table. Here all crew in the game is listed, no fields are editable here except a checkbox that only allows adding crew to the collection.
+This tab contains the Crew table. Here all crew in the game is listed, no fields are editable here except a checkbox that only allows adding crew to the
+collection.
 Clicking on a column header will sort the table according to that column.
 Clicking on the Crew Name field, Race field or any of the Traits in the traits field will open the corresponding wiki page.
 
 3) The Log tab
 
-This tab contains a text area where messages regarding the execution of commands can be seen.
+This tab contains a textarea where messages regarding the execution of commands can be seen.
 
 4) The Charts tab
 
 This tab contains four charts:
 
- - All Crew pie chart: A pie chart where the balance (quantity of crew/rarity) of the crew in the game can be seen. Each slice represents the number of crew in game of a certain rarity.
+ - All Crew pie chart: A pie chart where the balance (quantity of crew/rarity) of the crew in the game can be seen. Each slice represents the number
+of crew in game of a certain rarity.
  
- - Crew Collection pie chart: A pie chart where the balance (quantity of crew/rarity) of the collection can be seen. Each slice represents the number of crew in the collection of a certain rarity.
+ - Crew Collection pie chart: A pie chart where the balance (quantity of crew/rarity) of the collection can be seen. Each slice represents the number
+of crew in the collection of a certain rarity.
  
- - Bar chart: A bar chart where on the left the bars represent the number of crew in the game of a certain rarity and on the right the number of crew in the collection of a certain rarity.
+ - Bar chart: A bar chart where on the left the bars represent the number of crew in the game of a certain rarity and on the right the number of crew
+in the collection of a certain rarity.
  
  - Stacked bar chart: Similar to the bar chart, only that the bars are stacked instead of being side-by-side.
 
@@ -39,28 +57,34 @@ If a chart is clicked it is opened in a new window where it is enlarged and can 
 
 5) The Stats tab
 
-This tab has a text field where the number of crew slots can be entered. It has some information about the collection, such as the number of crew/crew slots, the number of crew in the collection per rarity/the number of crew in the game per rarity and the average crew level.
+This tab has a text field where the number of crew slots can be entered. It has some information about the collection, such as the number of crew/crew
+slots, the number of crew in the collection per rarity/the number of crew in the game per rarity and the average crew level.
 
+=====================================================================
 The Menu Bar
 
 The menu bar consists of five menus: File, Search, Export, Skin, Font and Help.
 
 1)File
 
- - Download Crew: Drops the crew table (the collection is kept intact) and refetches all the crew data from the wiki. This is usefull when new crew is added to the wiki.
+ - Download Crew: Drops the crew table (the collection is kept intact) and re fetches all the crew data from the wiki. This is useful when new crew is
+added to the wiki.
 
  - Refresh Tables: Refreshes the data shown in the tables, affects only the view, not the data.
 
- - Exit: Saves various settings like the window size, window position etc, shutsdown the database and closes the application.
+ - Exit: Saves various settings like the window size, window position etc, shuts down the database and closes the application.
 
 2) Search
 
-Using the search function both tables can be filtered according to certain criteria. Typing in any text field will immediatly query the database and populate the tables accordingly.
+Using the search function, both tables can be filtered according to certain criteria. Typing in any text field will immediately query the database and
+populate the tables accordingly.
 Any info can be entered only partly and the matches (if any) will be shown.
-Multiple traits can be entered (they can be seperated by a space or a comma) but there will be matches only if they are entered in the order that they appear in.
-Single traits of course will be matched regardless of their position.
+Multiple traits can be entered (they can be separated by a space or a comma) but there will be matches only if they are entered in the same order that they
+appear in.
+Single traits of course will be matched regardless of their position in the field.
 
-For the search window to open this menu item has to be pressed when either the Collection tab or the Crew tab are open. It will query the table that is open.
+For the search window to open, this menu item has to be pressed when either the Collection tab or the Crew tab are open. It will filter the table that is
+open.
 
 3) Export
 
@@ -77,9 +101,9 @@ Lists skins available on the system and allows changing the current skin. This s
  - Increase Font Size: Increases the font size.
  - Decrease Font Size: Decreases the font size.
  - Reset Font Size: Resets the font size (12).
- - Chabge Font: Lists fonts found on the system and allows to change the font being used in the tables.
+ - Change Font: Lists fonts found on the system and allows to change the font being used in the tables.
 
-These settings ar saved.
+These settings are saved.
 
 6) Help
 
