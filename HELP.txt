@@ -22,7 +22,10 @@ To run the application, double-click on the STTCollectionManager.jar file, or ri
 open with and your JRE (java.exe on Windows, OpenJDK or Oracle Java on Linux).
 
 To run the project from the command line, go to the application folder and 
-type the following: java -jar "STTCollectionManager.jar"
+type the following:
+
+
+java -jar "STTCollectionManager.jar"
 
 The Shortcut icons folder contains icon images of various sizes if you wish to make a shortcut
 for the application.
@@ -34,7 +37,7 @@ STT Collection Manager consists of multiple tabs:
 
 This tab contains the Crew Collection table. Here all crew that is currently in the collection can be edited. The editable fields are all the skill fields,
 the fused stars field, the level field, the quantity field (in case of multiples) and a checkbox that removes crew from the collection.
-Clicking on a column header will sort the table according to that column (this setting is saved).
+Clicking on a column header will sort the table according to that column.
 Clicking on the Crew Name field, Race field or any of the Traits in the traits field will open the corresponding wiki page.
 Right-clicking on crew members brings up a menu that allows to make a copy of the selected crew member (multiples but with different stats).
 
@@ -77,7 +80,7 @@ The Menu Bar
 
 The menu bar consists of five menus: File, Search, Export, Skin, Font and Help.
 
-1)File
+1) File
 
  - Download Crew: Drops the crew table (the collection is kept intact) and re fetches all the crew data from the wiki. This is useful when new crew is
 added to the wiki.

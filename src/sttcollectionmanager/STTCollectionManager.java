@@ -745,43 +745,18 @@ public class STTCollectionManager extends javax.swing.JFrame {
     }//GEN-LAST:event_infoMenuItemActionPerformed
 
     private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpMenuItemActionPerformed
-        /*
-        String path=System.getProperty("user.dir");
-        path=path.replace('\\', '/');
-        String path2 = path+"/help/help.html";
-        path=path.replace(" ", "%20");
-        path="file://localhost/"+path+"/help/help.html";
-        
-        if(!java.awt.Desktop.isDesktopSupported()) {
-            JOptionPane.showMessageDialog(null, java.util.ResourceBundle.getBundle("mysqlsig/Bundle").getString("Desktop_is_not_supported!\nPlease_try_to_open_")+path2+" "+java.util.ResourceBundle.getBundle("mysqlsig/Bundle").getString("_manually."), java.util.ResourceBundle.getBundle("mysqlsig/Bundle").getString("Error"),0);
-            return;
-        }
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                    Double width = screenSize.getWidth()/4.0;
 
-        Desktop desktop = Desktop.getDesktop();
-
-        if(!desktop.isSupported(Desktop.Action.BROWSE)) {
-            JOptionPane.showMessageDialog(null, java.util.ResourceBundle.getBundle("mysqlsig/Bundle").getString("Desktop_doesn't_support_the_browse_action!\nPlease_try_to_open_")+path2+" "+java.util.ResourceBundle.getBundle("mysqlsig/Bundle").getString("_manually."), java.util.ResourceBundle.getBundle("mysqlsig/Bundle").getString("Error"),0);
-            return;
-        }
-        
-        URI uri = null;
-        try {           
-            uri = new URI(path);
-            //After Building the project, all Resources are stored within the jar file.
-            //Browsers at this time can't open files from within jar files.
-            //uri = this.getClass().getResource("resources/help.html").toURI();
-        } catch (URISyntaxException ex) {
-            JOptionPane.showMessageDialog(null, java.util.ResourceBundle.getBundle("mysqlsig/Bundle").getString("Error!\nPlease_try_to_open_")+path2+" "+java.util.ResourceBundle.getBundle("mysqlsig/Bundle").getString("_manually."), java.util.ResourceBundle.getBundle("mysqlsig/Bundle").getString("Error"),0);
-            return;
-        }
-        try {            
-            desktop.browse(uri);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, java.util.ResourceBundle.getBundle("mysqlsig/Bundle").getString("Error!\nPlease_try_to_open_")+path2+" "+java.util.ResourceBundle.getBundle("mysqlsig/Bundle").getString("_manually."), java.util.ResourceBundle.getBundle("mysqlsig/Bundle").getString("Error"),0);
-            return;
-        }
-        JOptionPane.showMessageDialog(null, path2, java.util.ResourceBundle.getBundle("mysqlsig/Bundle").getString("Information"),1);
-        */
+                    JDialog helpDialog = new JDialog(this, "STT Collection Manager Help", false);
+                    helpDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                    
+                    HelpJPanel helpPanel = new HelpJPanel();
+                    helpDialog.getContentPane().add(helpPanel);
+                    helpDialog.setSize(960, 400);
+                    helpDialog.setLocation(width.intValue(), 0);
+                    helpDialog.pack();
+                    helpDialog.setVisible(true);
     }//GEN-LAST:event_helpMenuItemActionPerformed
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
