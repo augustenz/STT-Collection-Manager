@@ -2,7 +2,7 @@ STT Collection Manager
 Author: August Enzelberger
 Project Homepage: https://github.com/augustenz/STT-Collection-Manager
 
-STT Collection Manager is a Java application, developed to help manage a Crew collection for Disruptor Beam's Star Trek Timelines game
+STT Collection Manager is a Java application, developed to help manage a Crew collection for Disruptor Beam's Star Trek Timelines game.
 
 =====================================================================
 Important Info
@@ -16,6 +16,15 @@ In that case either the extra packages can be installed, or Oracle's JRE.
 JavaFX is required to run this application.
 
 The database is saved in a folder with the name "STTCollectionManager" in the user's home directory, or in the directory containing the application.
+
+To run the application, double-click on the STTCollectionManager.jar file, or right click and choose 
+open with and your JRE (java.exe on Windows, OpenJDK or Oracle Java on Linux).
+
+To run the project from the command line, go to the application folder and 
+type the following: java -jar "STTCollectionManager.jar"
+
+The Shortcut icons folder contains icon images of various sizes if you wish to make a shortcut
+for the application.
 
 =====================================================================
 STT Collection Manager consists of multiple tabs:
