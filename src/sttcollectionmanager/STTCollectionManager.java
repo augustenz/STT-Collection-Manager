@@ -259,7 +259,7 @@ public class STTCollectionManager extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        crewCollectionTable.setToolTipText("Right click on a crew member to make a copy (duplicates). Click on editable fields to enter custom values. Click on the Crew Name, Char Name, Race or any of the Traits to open the corresponding WiKi page. Press the \"In Collection\" checkbox to remove a crew member from the collection.");
+        crewCollectionTable.setToolTipText("");
         collectionScrollPane.setViewportView(crewCollectionTable);
 
         javax.swing.GroupLayout collectionPanelLayout = new javax.swing.GroupLayout(collectionPanel);
@@ -286,7 +286,7 @@ public class STTCollectionManager extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        crewTable.setToolTipText("Press on the checkbox to add a crew member to the collection. Click on the Crew Name, Char Name, Race or any of the Traits to open the corresponding WiKi page.");
+        crewTable.setToolTipText("");
         crewScrollPane.setViewportView(crewTable);
         crewTable.getAccessibleContext().setAccessibleName("");
 
@@ -1351,7 +1351,7 @@ public class STTCollectionManager extends javax.swing.JFrame {
             else {
                 if(columnCount!=13) {
                     String SQL="UPDATE STTCollectionManager.Collection SET starsFused='"+dataRow[4]+"', level='"+dataRow[5]+"', fullyEquipped='"+dataRow[6]+"', inVault='"+dataRow[7]+"', cmd='"+dataRow[8]+"', dip='"+dataRow[9]+"', eng='"+dataRow[10]+"', med='"+dataRow[11]+"', sci='"+dataRow[12]+"', sec='"+dataRow[13]+"', quantity='"+dataRow[16]+"' WHERE "
-                    +"Collection.crewName='"+dataRow[1]+"' AND Collection.id="+dataRow[0]+"";
+                    +"Collection.crewName='"+dataRow[1].replace("'", "''")+"' AND Collection.id="+dataRow[0]+"";
                     sqlConnectionBridge.update(SQL);
 
                     ActionListener al= new java.awt.event.ActionListener() {
