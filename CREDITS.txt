@@ -1,0 +1,22 @@
+Author: August Enzelberger
+Project Webpage: https://github.com/augustenz/STT-Collection-Manager
+
+STT Collection Manager was created with Netbeans IDE 8.1.
+
+Crew data comes from the very awesome Star Trek Timelines Wiki (http://startrektimelineswiki.com) and its awesome users.
+
+App icon by Memory Alpha (http://memory-alpha.wikia.com).
+
+Roddenberry font by Jaynz (http://www.fontspace.com/pixel-sagas/roddenberry).
+
+Icons from the Noun Project (https://thenounproject.com): Info by Karthick Nagarajan, Export by Mourad Mokrane, Refresh by Alex Auda Samora, Download by Guillaume Bahri, Zoom out by useiconic.com, Zoom in by useiconic.com, Reset zoom by Leonardo Schneider, Font by iconsmind.com, Help by Dima Lagunov, Log by Arthur Shlain, Stats by Calvin Goodman, Charts by Prerak Patel, About by Gregor Črešnar, Skin by Rflor, Exit by Andres Gleixner, Tables by Viktor Vorobyev, Search by Iconfactory Team.
+
+JFontChooser by Masahiko Sawai (http://jfontchooser.osdn.jp/site/jfontchooser).
+
+Nimbus checkbox alternate row background color bug fix by Harald Barsnes (https://github.com/compomics).
+
+Many thanks to all the awesome people at Stack Overflow (http://stackoverflow.com) and Coderunch (https://coderanch.com), without all of the excellent information there this project would have been much harder to develop.
+
+This software is released under the GNU General Public License, version 3 (https://www.gnu.org/licenses/gpl-3.0.html).
+
+Game content and materials are trademarks and copyrights of their respective publisher and its licensors.
