@@ -1,0 +1,37 @@
+/*
+Copyright (C) 2016 August Enzelberger <augustenz+github@gmail.com> (https://github.com/augustenz)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+/* 
+    Created on : Aug 1, 2016, 8:20:13 PM
+    Author     : August Enzelberger <augustenz+github@gmail.com> (https://github.com/augustenz)
+*/
+
+.default-color0.chart-pie { -fx-pie-color: #fdd26a; }
+.default-color1.chart-pie { -fx-pie-color: #aa2deb; }
+.default-color2.chart-pie { -fx-pie-color: #5aaaff; }
+.default-color3.chart-pie { -fx-pie-color: #50aa3c; }
+.default-color4.chart-pie { -fx-pie-color: #9b9b9b; }
+
+.default-color0.chart-bar { -fx-bar-fill: #fdd26a; }
+.default-color1.chart-bar { -fx-bar-fill: #aa2deb; }
+.default-color2.chart-bar { -fx-bar-fill: #5aaaff; }
+.default-color3.chart-bar { -fx-bar-fill: #50aa3c; }
+.default-color4.chart-bar { -fx-bar-fill: #9b9b9b; }
+.default-color5.chart-bar { -fx-bar-fill: #fdd26a; }
+.default-color6.chart-bar { -fx-bar-fill: #aa2deb; }
+.default-color7.chart-bar { -fx-bar-fill: #5aaaff; }
+.default-color8.chart-bar { -fx-bar-fill: #50aa3c; }
+.default-color9.chart-bar { -fx-bar-fill: #9b9b9b; }
