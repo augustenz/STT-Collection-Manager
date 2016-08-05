@@ -1,6 +1,7 @@
 STT Collection Manager
 Author: August Enzelberger
 Project Homepage: https://github.com/augustenz/STT-Collection-Manager
+Date: 5/8/2016
 
 STT Collection Manager is a Java application, developed to help manage a Crew collection for Disruptor Beam's Star Trek Timelines game.
 
