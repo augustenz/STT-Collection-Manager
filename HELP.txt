@@ -15,6 +15,7 @@ Other JREs (like OpenJDK in Linux) need extra packages (like OpenJFX in Linux) t
 In that case either the extra packages can be installed, or Oracle's JRE.
 JavaFX is required to run this application.
 
+The database is saved in a folder with the name "STTCollectionManager" in the user's home directory, or in the directory containing the application.
 =====================================================================
 STT Collection Manager consists of multiple tabs:
 
