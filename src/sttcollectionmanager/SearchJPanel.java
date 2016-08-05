@@ -61,12 +61,10 @@ public class SearchJPanel extends javax.swing.JPanel {
                       inCollectionCheckBox.setSelected(true);
                       inCollectionCheckBox.setEnabled(false);
         } else if(table.getModel().equals(sttCollectionManager.getCrewTable().getModel())) {
-                      /*
                       fullyEquippedCheckBox.setSelected(false);
                       fullyEquippedCheckBox.setEnabled(false);
                       inVaultCheckBox.setSelected(false);
                       inVaultCheckBox.setEnabled(false);
-                      */
                       inCollectionCheckBox.setSelected(false);
                       inCollectionCheckBox.setEnabled(false);
         }
