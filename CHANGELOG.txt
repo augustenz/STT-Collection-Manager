@@ -1,0 +1,5 @@
+5/8/2016
+Version 1.0 (Initial realease)
+
+- Removed table tooltips
+- Fixed crew in collection SQL update (single quote escape)
