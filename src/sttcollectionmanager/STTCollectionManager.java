@@ -35,6 +35,8 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -58,8 +60,12 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javafx.embed.swing.JFXPanel;
 import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.DefaultCellEditor;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.InputMap;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -70,6 +76,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.RowSorter;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -259,7 +267,6 @@ public class STTCollectionManager extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        crewCollectionTable.setToolTipText("");
         collectionScrollPane.setViewportView(crewCollectionTable);
 
         javax.swing.GroupLayout collectionPanelLayout = new javax.swing.GroupLayout(collectionPanel);
@@ -286,7 +293,6 @@ public class STTCollectionManager extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        crewTable.setToolTipText("");
         crewScrollPane.setViewportView(crewTable);
         crewTable.getAccessibleContext().setAccessibleName("");
 
@@ -1309,7 +1315,8 @@ public class STTCollectionManager extends javax.swing.JFrame {
             for (int i=0; i<columnCount-1; i++)
                 dataRow[i]=(model.getValueAt(row,i).toString());
             
-            if(columnCount==13) {
+            //if(columnCount==13) {
+            if(model.equals((DefaultTableModel)crewTable.getModel())) {
                 dataRow[2] = "1";
                 dataRow[3] = "1";
                 dataRow[11] = "1";
@@ -1317,24 +1324,25 @@ public class STTCollectionManager extends javax.swing.JFrame {
             
             if(column==columnCount-1) {
                 if(data) {
-                    String SQL = "SELECT MAX (Collection.id) FROM STTCollectionManager.Collection";
-                    DefaultTableModel maxIdModel = sqlConnectionBridge.query(SQL,"ID");
-                    String id ="";
-                    if(maxIdModel.getValueAt(0,0)!=null) {
-                        id = Integer.toString(Integer.parseInt(maxIdModel.getValueAt(0,0).toString())+1);
-                        if(Integer.parseInt(id)>0)
-                            SQL = "ALTER TABLE Collection ALTER COLUMN id RESTART WITH "+id;
-                        else
-                            SQL = "ALTER TABLE Collection ALTER COLUMN id RESTART WITH "+1;
+                    if(model.equals(crewTable.getModel())) {
+                        String SQL = "SELECT MAX (Collection.id) FROM STTCollectionManager.Collection";
+                        DefaultTableModel maxIdModel = sqlConnectionBridge.query(SQL,"ID");
+                        String id ="";
+                        if(maxIdModel.getValueAt(0,0)!=null) {
+                            id = Integer.toString(Integer.parseInt(maxIdModel.getValueAt(0,0).toString())+1);
+                            if(Integer.parseInt(id)>0)
+                                SQL = "ALTER TABLE Collection ALTER COLUMN id RESTART WITH "+id;
+                            else
+                                SQL = "ALTER TABLE Collection ALTER COLUMN id RESTART WITH "+1;
+                        }
+                        sqlConnectionBridge.update(SQL);
+                        SQL="INSERT INTO STTCollectionManager.Collection(crewName, starsFused, level, fullyEquipped, inVault, cmd, dip, eng, med, sci, sec, quantity, incollection) VALUES ('"+dataRow[1].replace("'", "''")+"', '"+dataRow[2]+"', '"+dataRow[3]+"', 'false', 'false', '"+dataRow[4]+"', '"+dataRow[5]+"', '"+dataRow[6]+"', '"+dataRow[7]+"', '"+dataRow[8]+"', '"+dataRow[9]+"', '"+dataRow[11]+"', '"+data+"')";
+                        sqlConnectionBridge.update(SQL);
+
+                        dataChangedRefreshComponents();
                     }
-                    sqlConnectionBridge.update(SQL);
-                    SQL="INSERT INTO STTCollectionManager.Collection(crewName, starsFused, level, fullyEquipped, inVault, cmd, dip, eng, med, sci, sec, quantity, incollection) VALUES ('"+dataRow[1].replace("'", "''")+"', '"+dataRow[2]+"', '"+dataRow[3]+"', 'false', 'false', '"+dataRow[4]+"', '"+dataRow[5]+"', '"+dataRow[6]+"', '"+dataRow[7]+"', '"+dataRow[8]+"', '"+dataRow[9]+"', '"+dataRow[11]+"', '"+data+"')";
-                    sqlConnectionBridge.update(SQL);
-
-                    dataChangedRefreshComponents();
-
                 } else {
-                    if(model.equals(crewCollectionTable.getModel())) {
+                    if(model.equals((DefaultTableModel)crewCollectionTable.getModel())) {
                         String SQL="DELETE FROM STTCollectionManager.Collection WHERE "
                         +"Collection.crewName='"+dataRow[1].replace("'", "''")+"' AND Collection.id="+dataRow[0]+"";
                         sqlConnectionBridge.update(SQL);
@@ -1349,11 +1357,14 @@ public class STTCollectionManager extends javax.swing.JFrame {
                 } 
             }
             else {
-                if(columnCount!=13) {
+                //if(columnCount!=13) {
+                if(model.equals((DefaultTableModel)crewCollectionTable.getModel())) {
                     String SQL="UPDATE STTCollectionManager.Collection SET starsFused='"+dataRow[4]+"', level='"+dataRow[5]+"', fullyEquipped='"+dataRow[6]+"', inVault='"+dataRow[7]+"', cmd='"+dataRow[8]+"', dip='"+dataRow[9]+"', eng='"+dataRow[10]+"', med='"+dataRow[11]+"', sci='"+dataRow[12]+"', sec='"+dataRow[13]+"', quantity='"+dataRow[16]+"' WHERE "
                     +"Collection.crewName='"+dataRow[1].replace("'", "''")+"' AND Collection.id="+dataRow[0]+"";
                     sqlConnectionBridge.update(SQL);
-
+                    refreshStats=true;
+                    
+                    /*
                     ActionListener al= new java.awt.event.ActionListener() {
                         public void actionPerformed(java.awt.event.ActionEvent evt) {
                             int selectedRow = crewCollectionTable.getSelectedRow();
@@ -1365,6 +1376,7 @@ public class STTCollectionManager extends javax.swing.JFrame {
                     Timer timer = new Timer(0,al);
                     timer.setRepeats(false);
                     timer.start();
+                    */
                 }
             }
         }
@@ -1703,6 +1715,7 @@ public class STTCollectionManager extends javax.swing.JFrame {
         };
         
         crewCollectionTable.setModel(model);
+
         SQLConnectionBridge sqlConnectionBridge = new SQLConnectionBridge(jdbcUrl,user,password,sttCollectionManager);
         
         model.addColumn("ID");
@@ -1794,6 +1807,11 @@ public class STTCollectionManager extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "crewCollectionTable RowSorter Exception: " + e.getMessage());
             return e;
             }
+            
+            for (int i = 0; i < crewCollectionTable.getColumnModel().getColumnCount(); i++) {
+                final DefaultCellEditor defaultEditor = (DefaultCellEditor) crewCollectionTable.getDefaultEditor(crewCollectionTable.getColumnClass(i));
+                defaultEditor.setClickCountToStart(1);
+            }
 
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
@@ -1803,7 +1821,35 @@ public class STTCollectionManager extends javax.swing.JFrame {
             });
             
             crewCollectionTable.getModel().addTableModelListener(new tableDataListener());
-            
+
+            crewCollectionTable.addKeyListener(new KeyAdapter() {
+                public void keyReleased(KeyEvent e) {
+                    if(e.getKeyCode() == KeyEvent.VK_TAB) {
+                        int column = crewCollectionTable.getSelectedColumn();
+                        int row = crewCollectionTable.getSelectedRow();
+                        while(crewCollectionTable.isCellEditable(row,column) == false) {
+                          if(row<0)
+                              row = 0;
+                          
+                          if(column<0)
+                              column = 0;
+                          else
+                              column++;
+                          
+                          if(column == crewCollectionTable.getColumnCount()) {
+                            column = 0;
+                            row++;
+                            if(row == crewCollectionTable.getRowCount())
+                                row = 0;
+                          }
+                        }
+
+                        crewCollectionTable.editCellAt(row, column);
+                        crewCollectionTable.changeSelection(row, column, false, false);
+                    }
+                }
+            });
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "crewCollectionTable Exception: " + e.getMessage());
             return e;
@@ -2386,6 +2432,15 @@ public class STTCollectionManager extends javax.swing.JFrame {
         table.addMouseMotionListener (new MouseAdapter() {
             public void mouseMoved (MouseEvent e) {
                 table.getTableHeader().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                int row=table.rowAtPoint(e.getPoint());
+                if (row > -1) {
+                    if (!table.isEditing()) {
+                        table.clearSelection();
+                        table.setRowSelectionInterval(row, row);
+                        //table.setSelectionBackground(Color.white);
+                    }
+                }
+ 
                 if(table.getModel()==crewTable.getModel()) {
                     switch (table.columnAtPoint(e.getPoint())) {
                         case 1: setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); break;

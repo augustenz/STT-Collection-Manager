@@ -119,7 +119,7 @@ public class StackedBarChartSTT {
             }
         });
         */
-        scene.getStylesheets().add("/sttcollectionmanager/resources/chartsStylesheet.css");
+        scene.getStylesheets().add("/sttcollectionmanager/resources/stackedBarStylesheet.css");
         fxPanel.setScene(scene);
     }
 
