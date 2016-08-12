@@ -8,7 +8,7 @@ Version 1.1
 - Crew in collection update fixes - improved performance
 
 5/8/2016
-Version 1.0 (Initial realease)
+Version 1.0 (Initial release)
 
 - Removed table tooltips
 - Fixed crew in collection SQL update (single quote escape)
