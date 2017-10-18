@@ -46,6 +46,8 @@ Version 1.0 (Initial release)
 - Removed table tooltips
 - Fixed crew in collection SQL update (single quote escape)
 
+<hr>
+
 <h2>Help</h2>
 
 STT Collection Manager v1.2
@@ -190,6 +192,8 @@ These settings are saved.
  - Info: Info about the system.
  - About: The application credits.
 
+<hr>
+
 <h2>Credits</h2>
 
 Author: August Enzelberger
@@ -214,6 +218,8 @@ Many thanks to all the awesome people at Stack Overflow (http://stackoverflow.co
 This software is released under the GNU General Public License, version 3 (https://www.gnu.org/licenses/gpl-3.0.html).
 
 Game content and materials are trademarks and copyrights of their respective publisher and its licensors.
+
+<hr>
 
 <h2>License</h2>
 
