@@ -66,7 +66,16 @@ public class TextExporter {
                 String cell = null;
                 String tail = "";
                 try {
-                    cell = model.getValueAt(i,j).toString();
+                    if(tableName.equals("STT Crew Collection")) {
+                        if((j==6 || j==7) && model.getValueAt(i,j).toString().equals("false"))
+                            cell = "No";
+                        else if((j==6 || j==7) && model.getValueAt(i,j).toString().equals("true"))
+                            cell = "Yes";
+                        else
+                            cell = model.getValueAt(i,j).toString();
+                    }
+                    else
+                        cell = model.getValueAt(i,j).toString();
                 }
                 catch (NullPointerException ex) {
                     System.out.println("Cell("+i+":"+j+")=null");

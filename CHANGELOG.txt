@@ -1,3 +1,22 @@
+16/10/2017
+Version 1.2
+
+New Features:
+  - Added Settings tab (change every URL in the app)
+  - Added Import function (import crew data from .xls files for both Collection and Crew Tables)
+  - Added faster way to add copies to collection (press an already checked checkbox in the Crew table)
+  - Clicking or tabbing table cells auto selects-all cell content for faster editing
+  - Collection table can now be exported to HTML too
+  - All table rows in exported HTML files are now colored by Crew rarity
+  - HTML tables are now sortable by any column (clicking on table headers toggles Asc/Desc sort order)
+  - Progress window with a text area and a progress bar for import tasks
+
+Bugs/Performance
+  - Fixed bug where the splash screen wouldn't show
+  - Fixed bug where tabbing through the Collection cells would delete an entry
+  - Workaround for a bug which would add the first member in the Collection twice (first run only)
+  - Various other performance optimizations and bug fixes
+
 11/8/2016
 Version 1.1
 

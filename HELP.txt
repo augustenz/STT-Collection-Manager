@@ -1,9 +1,9 @@
-STT Collection Manager
+STT Collection Manager v1.2
 Author: August Enzelberger
 Project Homepage: https://github.com/augustenz/STT-Collection-Manager
-Date: 5/8/2016
+Date: 16/10/2017
 
-STT Collection Manager is a desktop Java application, developed to help manage a Crew collection for Disruptor Beam's Star Trek Timelines game.
+STT Collection Manager is a Java application, developed to help manage a Crew collection for Disruptor Beam's Star Trek Timelines game.
 
 =====================================================================
 Important Info
@@ -31,20 +31,24 @@ The Shortcut icons folder contains icon images of various sizes if you wish to m
 for the application.
 
 =====================================================================
-STT Collection Manager consists of multiple tabs:
+STT Collection Manager consists of six tabs:
 
 1) The Collection tab
 
 This tab contains the Crew Collection table. Here all crew that is currently in the collection can be edited. The editable fields are all the skill fields,
 the fused stars field, the level field, the quantity field (in case of multiples) and a checkbox that removes crew from the collection.
+Clicking on an editable cell opens it for editing and auto selects-all content for faster editing.
+While editing a cell, pressing Tab on the keyboard will move to the next cell.
+Tabbing will cycle through all editable columns (except Quantity) and all rows.
 Clicking on a column header will sort the table according to that column.
 Clicking on the Crew Name field, Race field or any of the Traits in the traits field will open the corresponding wiki page.
 Right-clicking on crew members brings up a menu that allows to make a copy of the selected crew member (multiples but with different stats).
 
 2) The Crew tab
 
-This tab contains the Crew table. Here all crew in the game is listed, no fields are editable here except a checkbox that only allows adding crew to the
+This tab contains the Crew table. Here all crew in the game is listed, no fields are editable here except a checkbox that allows adding crew to the
 collection.
+If this checkbox is already checked, additional clicks on the checkbox will create copies in the Collection (faster way for adding duplicates).
 Clicking on a column header will sort the table according to that column.
 Clicking on the Crew Name field, Race field or any of the Traits in the traits field will open the corresponding wiki page.
 
@@ -75,10 +79,14 @@ If a chart is clicked it is opened in a new window where it is enlarged and can 
 This tab has a text field where the number of crew slots can be entered. It has some information about the collection, such as the number of crew/crew
 slots, the number of crew in the collection per rarity/the number of crew in the game per rarity and the average crew level.
 
+6) The Settings tab
+
+This tab has three text fields where the URLs used in the app can be changed.
+
 =====================================================================
 The Menu Bar
 
-The menu bar consists of five menus: File, Search, Export, Skin, Font and Help.
+The menu bar consists of seven menus: File, Search, Import, Export, Skin, Font and Help.
 
 1) File
 
@@ -101,17 +109,23 @@ Single traits of course will be matched regardless of their position in the fiel
 For the search window to open, this menu item has to be pressed when either the Collection tab or the Crew tab are open. It will filter the table that is
 open.
 
-3) Export
+3) Import
 
- - Export All Crew: Exports all crew in the game to a HTML (crew in collection is shown in bold), text, or csv (good for Spreadsheets) file.
+ - Import All Crew: Imports crew data from an .xls file (tab seperated text file) to the "All Crew" table.
 
- - Export Crew Collection: Exports the crew collection to a HTML, text, or csv (good for Spreadsheets) file.
+ - Import Crew Collection: Imports crew data from an .xls file (tab seperated text file) to the "Crew Collection" table.
 
-4) Skin
+4) Export
+
+ - Export All Crew: Exports all crew in the game to a HTML (crew in collection is shown in bold), text, or xls (tab seperated text file - good for Spreadsheets) file.
+
+ - Export Crew Collection: Exports the crew collection to a HTML, text, or xls (tab seperated text file - good for Spreadsheets) file.
+
+5) Skin
 
 Lists skins available on the system and allows changing the current skin. This setting is saved.
 
-5) Font
+6) Font
 
  - Increase Font Size: Increases the font size.
  - Decrease Font Size: Decreases the font size.
@@ -120,7 +134,7 @@ Lists skins available on the system and allows changing the current skin. This s
 
 These settings are saved.
 
-6) Help
+7) Help
 
  - Help: Probably this readme file :)
  - Info: Info about the system.

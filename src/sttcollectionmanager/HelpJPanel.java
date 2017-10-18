@@ -39,10 +39,10 @@ public class HelpJPanel extends javax.swing.JPanel {
     public HelpJPanel() {
         initComponents();
         
-        String text="STT Collection Manager\n" +
+        String text="STT Collection Manager v1.2\n" +
                     "Author: August Enzelberger\n" +
                     "Project Homepage: https://github.com/augustenz/STT-Collection-Manager\n" +
-                    "Date: 5/8/2016\n" +
+                    "Date: 16/10/2017\n" +
                     "\n" +
                     "STT Collection Manager is a Java application, developed to help manage a Crew collection for Disruptor Beam's Star Trek Timelines game.\n" +
                     "\n" +
@@ -72,20 +72,24 @@ public class HelpJPanel extends javax.swing.JPanel {
                     "for the application.\n" +
                     "\n" +
                     "=====================================================================\n" +
-                    "STT Collection Manager consists of multiple tabs:\n" +
+                    "STT Collection Manager consists of six tabs:\n" +
                     "\n" +
                     "1) The Collection tab\n" +
                     "\n" +
                     "This tab contains the Crew Collection table. Here all crew that is currently in the collection can be edited. The editable fields are all the skill fields,\n" +
                     "the fused stars field, the level field, the quantity field (in case of multiples) and a checkbox that removes crew from the collection.\n" +
+                    "Clicking on an editable cell opens it for editing and auto selects-all content for faster editing.\n" +
+                    "While editing a cell, pressing Tab on the keyboard will move to the next cell.\n" +
+                    "Tabbing will cycle through all editable columns (except Quantity) and all rows.\n" +
                     "Clicking on a column header will sort the table according to that column.\n" +
                     "Clicking on the Crew Name field, Race field or any of the Traits in the traits field will open the corresponding wiki page.\n" +
                     "Right-clicking on crew members brings up a menu that allows to make a copy of the selected crew member (multiples but with different stats).\n" +
                     "\n" +
                     "2) The Crew tab\n" +
                     "\n" +
-                    "This tab contains the Crew table. Here all crew in the game is listed, no fields are editable here except a checkbox that only allows adding crew to the\n" +
+                    "This tab contains the Crew table. Here all crew in the game is listed, no fields are editable here except a checkbox that allows adding crew to the\n" +
                     "collection.\n" +
+                    "If this checkbox is already checked, additional clicks on the checkbox will create copies in the Collection (faster way for adding duplicates).\n" +
                     "Clicking on a column header will sort the table according to that column.\n" +
                     "Clicking on the Crew Name field, Race field or any of the Traits in the traits field will open the corresponding wiki page.\n" +
                     "\n" +
@@ -116,10 +120,14 @@ public class HelpJPanel extends javax.swing.JPanel {
                     "This tab has a text field where the number of crew slots can be entered. It has some information about the collection, such as the number of crew/crew\n" +
                     "slots, the number of crew in the collection per rarity/the number of crew in the game per rarity and the average crew level.\n" +
                     "\n" +
+                    "6) The Settings tab\n" +
+                    "\n" +
+                    "This tab has three text fields where the URLs used in the app can be changed.\n" +
+                    "\n" +
                     "=====================================================================\n" +
                     "The Menu Bar\n" +
                     "\n" +
-                    "The menu bar consists of five menus: File, Search, Export, Skin, Font and Help.\n" +
+                    "The menu bar consists of seven menus: File, Search, Export, Skin, Font and Help.\n" +
                     "\n" +
                     "1) File\n" +
                     "\n" +
@@ -142,17 +150,23 @@ public class HelpJPanel extends javax.swing.JPanel {
                     "For the search window to open, this menu item has to be pressed when either the Collection tab or the Crew tab are open. It will filter the table that is\n" +
                     "open.\n" +
                     "\n" +
-                    "3) Export\n" +
+                    "3) Import\n" +
                     "\n" +
-                    " - Export All Crew: Exports all crew in the game to a HTML (crew in collection is shown in bold), text, or csv (good for Spreadsheets) file.\n" +
+                    " - Import All Crew: Imports crew data from an .xls file (tab seperated text file) to the \"All Crew\" table.\n" +
                     "\n" +
-                    " - Export Crew Collection: Exports the crew collection to a HTML, text, or csv (good for Spreadsheets) file.\n" +
+                    " - Import Crew Collection: Imports crew data from an .xls file (tab seperated text file) to the \"Crew Collection\" table.\n" +
                     "\n" +
-                    "4) Skin\n" +
+                    "4) Export\n" +
+                    "\n" +
+                    " Export All Crew: Exports all crew in the game to a HTML (crew in collection is shown in bold), text, or xls (tab seperated text file - good for Spreadsheets) file.\n" +
+                    "\n" +
+                    "- Export Crew Collection: Exports the crew collection to a HTML, text, or xls (tab seperated text file - good for Spreadsheets) file.\n" +
+                    "\n" +
+                    "5) Skin\n" +
                     "\n" +
                     "Lists skins available on the system and allows changing the current skin. This setting is saved.\n" +
                     "\n" +
-                    "5) Font\n" +
+                    "6) Font\n" +
                     "\n" +
                     " - Increase Font Size: Increases the font size.\n" +
                     " - Decrease Font Size: Decreases the font size.\n" +
@@ -161,7 +175,7 @@ public class HelpJPanel extends javax.swing.JPanel {
                     "\n" +
                     "These settings are saved.\n" +
                     "\n" +
-                    "6) Help\n" +
+                    "7) Help\n" +
                     "\n" +
                     " - Help: Probably this readme file :)\n" +
                     " - Info: Info about the system.\n" +

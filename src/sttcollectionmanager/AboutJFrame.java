@@ -81,14 +81,14 @@ public class AboutJFrame extends javax.swing.JFrame {
                 Logger.getLogger(STTCollectionManager.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        String text="<p><b>Author:</b> August Enzelberger</p>"
+        String text="<p><b>Author:</b> August Enzelberger (<a href=\"mailto:augustenz+github@gmail.com\">augustenz+github@gmail.com</a>)</p>"
                 + "<p><b>Project Homepage:</b> <a href=https://github.com/augustenz/STT-Collection-Manager>https://github.com/augustenz/STT-Collection-Manager</a></p>"
                 + "\n"
                 + "<p>STT Collection Manager was created with Netbeans IDE 8.1."
-                + "<p>Crew data comes from the very awesome Star Trek Timelines Wiki (<a href=http://startrektimelineswiki.com>http://startrektimelineswiki.com</a>) and its awesome users.</p>"
+                + "<p>Crew data comes from the very awesome Star Trek Timelines Wiki (<a href=https://stt.wiki>https://stt.wiki</a>) and its awesome users.</p>"
                 + "<p>App icon by Memory Alpha (<a href=http://memory-alpha.wikia.com>http://memory-alpha.wikia.com</a>).</p>"
                 + "<p>Roddenberry font by Jaynz (<a href=http://www.fontspace.com/pixel-sagas/roddenberry>http://www.fontspace.com/pixel-sagas/roddenberry</a>).</p>"//
-                + "<p>Icons from the Noun Project (<a href=https://thenounproject.com>https://thenounproject.com</a>): Info by Karthick Nagarajan, Export by Mourad Mokrane, Refresh by Alex Auda Samora, Download by Guillaume Bahri, Zoom out by useiconic.com, Zoom in by useiconic.com, Reset zoom by Leonardo Schneider, Font by iconsmind.com, Help by Dima Lagunov, Log by Arthur Shlain, Stats by Calvin Goodman, Charts by Prerak Patel, About by Gregor Črešnar, Skin by Rflor, Exit by Andres Gleixner, Tables by Viktor Vorobyev, Search by Iconfactory Team.</p>"
+                + "<p>Icons from the Noun Project (<a href=https://thenounproject.com>https://thenounproject.com</a>): Info by Karthick Nagarajan, Export by Mourad Mokrane, Refresh by Alex Auda Samora, Download by Guillaume Bahri, Zoom out by useiconic.com, Zoom in by useiconic.com, Reset zoom by Leonardo Schneider, Font by iconsmind.com, Help by Dima Lagunov, Log by Arthur Shlain, Stats by Calvin Goodman, Charts by Prerak Patel, About by Gregor Črešnar, Skin by Rflor, Exit by Andres Gleixner, Tables by Viktor Vorobyev, Search by Iconfactory Team, Settings by Michal Beno.</p>"
                 + "<p>JFontChooser by Masahiko Sawai (<a href=http://jfontchooser.osdn.jp/site/jfontchooser>http://jfontchooser.osdn.jp/site/jfontchooser</a>).</p>"
                 + "<p>Nimbus checkbox alternate row background color bug fix by Harald Barsnes (<a href=https://github.com/compomics>https://github.com/compomics</a>).</p>"
                 + "<p>Many thanks to all the awesome people at Stack Overflow (<a href=http://stackoverflow.com>http://stackoverflow.com</a>) and Coderunch (<a href=https://coderanch.com>https://coderanch.com</a>), without all of the excellent information there this project would have been much harder to develop.</p>"
@@ -132,7 +132,7 @@ public class AboutJFrame extends javax.swing.JFrame {
         setResizable(false);
 
         aboutLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        aboutLabel.setText("About STT Collection Manager");
+        aboutLabel.setText("About STT Collection Manager v1.2");
 
         okButton.setText("Ok");
         okButton.addActionListener(new java.awt.event.ActionListener() {
@@ -142,7 +142,8 @@ public class AboutJFrame extends javax.swing.JFrame {
         });
 
         beerButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sttcollectionmanager/resources/beer32x32.png"))); // NOI18N
-        beerButton.setText("Beer :)");
+        beerButton.setText("Beer! :)");
+        beerButton.setToolTipText("If you like this Software feel free to buy me a beer!");
         beerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 beerButtonActionPerformed(evt);

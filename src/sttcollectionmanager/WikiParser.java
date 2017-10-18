@@ -49,7 +49,13 @@ public class WikiParser {
 
         String text = "";
             try {
-                BufferedReader br = new BufferedReader(new InputStreamReader(url.openConnection().getInputStream()));
+                System.setProperty("http.agent", "Chrome");
+                BufferedReader br=null;
+                try {
+                    br = new BufferedReader(new InputStreamReader(url.openConnection().getInputStream()));
+                } catch (Exception e) {
+                    return null;
+                }
                 String line = br.readLine();
                 while (line != null) {
                     line = line.trim();
@@ -66,96 +72,105 @@ public class WikiParser {
     
     public LinkedList<CrewMember> getCrewMembers() {
         LinkedList<CrewMember> crewList = new LinkedList<CrewMember>();
+        
+        /*
         URL url=null;
         
         try {
-            url = new URL ("http://startrektimelineswiki.com/wiki/Crew?action=raw");
+            //url = new URL ("https://stt.wiki/wiki/Crew?action=raw");
+            //url = new URL ("http://startrektimelineswiki.com/wiki/Crew?action=raw");
             //url = new URL ("https://en.wikipedia.org/wiki/Main_Page?action=raw");
         } catch (MalformedURLException ex) {
             Logger.getLogger(STTCollectionManager.class.getName()).log(Level.SEVERE, null, ex);
         }
+        */
+        
         WikiParser parser = new WikiParser(url);
-        String text = parser.parsePage();
-        
-        String delims = "[|,=,<,>]";
-        String[] tokens = text.split(delims);
 
-        for (int i = 0; i < tokens.length; i++) {
-           tokens[i] = tokens[i].trim(); 
-        }
-        
-        for (int i = 0; i < tokens.length; i++) {
-            //System.out.println(i+": "+tokens[i]);
-            CrewMember crewMember = new CrewMember();
-            crewMember.setCmd("0");
-            crewMember.setDip("0");
-            crewMember.setEng("0");
-            crewMember.setMed("0");
-            crewMember.setSci("0");
-            crewMember.setSec("0");
-            crewMember.setRace("");          
-            String[] traits = new String[30];
-            
-            if (tokens[i].equals("CrewName")) {
-                String crewName = "";
-                int k=i;
-                while (!tokens[k+1].equals("CharName")) { 
-                    crewName = crewName.concat(tokens[k+1].trim()+" ");
-                    k++;
-                }
-                crewMember.setCrewName(crewName.trim());
-                //String[] splitCharName = tokens[i+3].split("[{,(]");
-                //while (!tokens[j].equals("CharName") && j+5 < tokens.length) {
-                String[] splitCharName = tokens[k+2].split("[{,(]");
-                crewMember.setCharName(splitCharName[0].trim());
-                //crewMember.setStars(tokens[i+5]);
-                crewMember.setStars(tokens[k+4]);
-                int j=i+1;
-                //while (!tokens[j].equals("Race")) {
-                while (!tokens[j].equals("CrewName") && j+5 < tokens.length) {
-                    if (tokens[j+5].equals("CMD")) {
-                        crewMember.setCmd(tokens[j+6]);
-                    }
-                    if (tokens[j+5].equals("DIP")) {
-                        crewMember.setDip(tokens[j+6]);
-                    }
-                    if (tokens[j+5].equals("ENG")) {
-                        crewMember.setEng(tokens[j+6]);
-                    }
-                    if (tokens[j+5].equals("MED")) {
-                        crewMember.setMed(tokens[j+6]);
-                    }
-                    if (tokens[j+5].equals("SCI")) {
-                        crewMember.setSci(tokens[j+6]);
-                    }
-                    if (tokens[j+5].equals("SEC")) {
-                        crewMember.setSec(tokens[j+6]);
-                    }
-                    if (tokens[j+5].equals("Race")) {
-                        crewMember.setRace(tokens[j+6]);
-                    }
-                    if (tokens[j+5].startsWith("!")) {
-                        int h=j+7;
-                        int t=0;
-                        
-                        do {
-                            if(!tokens[h].equals(" "))
-                                traits[t] = tokens[h];
-                            if(tokens[h].endsWith("}"))
-                                traits[t] = traits[t].substring(0, traits[t].length()-2);
-                            
-                            t++;
-                            h++;
-                        } while(!tokens[h-1].endsWith("}"));
-                        crewMember.setTraits(traits);
-                    }
-                    j++;
-                }
-                crewList.add(crewMember);
+        String text = parser.parsePage();
+        if(text!=null) {
+            String delims = "[|,=,<,>]";
+            String[] tokens = text.split(delims);
+
+            for (int i = 0; i < tokens.length; i++) {
+               tokens[i] = tokens[i].trim(); 
             }
-            
+
+            for (int i = 0; i < tokens.length; i++) {
+                //System.out.println(i+": "+tokens[i]);
+                CrewMember crewMember = new CrewMember();
+                crewMember.setCmd("0");
+                crewMember.setDip("0");
+                crewMember.setEng("0");
+                crewMember.setMed("0");
+                crewMember.setSci("0");
+                crewMember.setSec("0");
+                crewMember.setRace("");          
+                String[] traits = new String[30];
+
+                if (tokens[i].equals("CrewName")) {
+                    String crewName = "";
+                    int k=i;
+                    while (!tokens[k+1].equals("CharName")) { 
+                        crewName = crewName.concat(tokens[k+1].trim()+" ");
+                        k++;
+                    }
+                    crewMember.setCrewName(crewName.trim());
+                    //String[] splitCharName = tokens[i+3].split("[{,(]");
+                    //while (!tokens[j].equals("CharName") && j+5 < tokens.length) {
+                    String[] splitCharName = tokens[k+2].split("[{,(]");
+                    crewMember.setCharName(splitCharName[0].trim());
+                    //crewMember.setStars(tokens[i+5]);
+                    crewMember.setStars(tokens[k+4]);
+                    int j=i+1;
+                    //while (!tokens[j].equals("Race")) {
+                    while (!tokens[j].equals("CrewName") && j+5 < tokens.length) {
+                        if (tokens[j+5].equals("CMD")) {
+                            crewMember.setCmd(tokens[j+6]);
+                        }
+                        if (tokens[j+5].equals("DIP")) {
+                            crewMember.setDip(tokens[j+6]);
+                        }
+                        if (tokens[j+5].equals("ENG")) {
+                            crewMember.setEng(tokens[j+6]);
+                        }
+                        if (tokens[j+5].equals("MED")) {
+                            crewMember.setMed(tokens[j+6]);
+                        }
+                        if (tokens[j+5].equals("SCI")) {
+                            crewMember.setSci(tokens[j+6]);
+                        }
+                        if (tokens[j+5].equals("SEC")) {
+                            crewMember.setSec(tokens[j+6]);
+                        }
+                        if (tokens[j+5].equals("Race")) {
+                            crewMember.setRace(tokens[j+6]);
+                        }
+                        if (tokens[j+5].startsWith("!")) {
+                            int h=j+7;
+                            int t=0;
+
+                            do {
+                                if(!tokens[h].equals(" "))
+                                    traits[t] = tokens[h];
+                                if(tokens[h].endsWith("}"))
+                                    traits[t] = traits[t].substring(0, traits[t].length()-2);
+
+                                t++;
+                                h++;
+                            } while(!tokens[h-1].endsWith("}"));
+                            crewMember.setTraits(traits);
+                        }
+                        j++;
+                    }
+                    crewList.add(crewMember);
+                }
+
+            }
+            return crewList;
         }
-        return crewList;
+        else
+            return null;
     }
 }
 

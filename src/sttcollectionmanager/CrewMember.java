@@ -24,6 +24,11 @@ public class CrewMember {
     private String crewName;
     private String charName;
     private String stars;
+    private String starsFused;
+    private String level;
+    private boolean fullyEquiped;
+    private boolean inVault;
+    private String quantity;
     private String cmd;
     private String dip;
     private String eng;
@@ -38,6 +43,11 @@ public class CrewMember {
         this.crewName="";
         this.charName="";
         this.stars="0";
+        this.starsFused="0";
+        this.level="0";
+        this.fullyEquiped=false;
+        this.inVault=false;
+        this.quantity="0";
         this.cmd="0";
         this.dip="0";
         this.eng="0";
@@ -63,7 +73,27 @@ public class CrewMember {
         this.traits=traits;
         this.inCollection=inCollection;
     }
-
+    
+    public void CrewMember(String crewName,String charName,String stars,String starsFused,String level,boolean fullyEquiped,boolean inVault,String quantity,String cmd,String dip,String eng,String med,String sci,String sec,String race,String[] traits,boolean inCollection) {
+        this.crewName=crewName;
+        this.charName=charName;
+        this.stars=stars;
+        this.starsFused=starsFused;
+        this.level=level;
+        this.fullyEquiped=fullyEquiped;
+        this.inVault=inVault;
+        this.quantity=quantity;
+        this.cmd=cmd;
+        this.dip=dip;
+        this.eng=eng;
+        this.med=med;
+        this.sci=sci;
+        this.sec=sec;
+        this.race=race;
+        this.traits=traits;
+        this.inCollection=inCollection;
+    }
+    
     /**
      * @return the crewName
      */
@@ -230,6 +260,76 @@ public class CrewMember {
      */
     public void setInCollection(boolean inCollection) {
         this.inCollection = inCollection;
+    }
+
+    /**
+     * @return the starsFused
+     */
+    public String getStarsFused() {
+        return starsFused;
+    }
+
+    /**
+     * @param starsFused the starsFused to set
+     */
+    public void setStarsFused(String starsFused) {
+        this.starsFused = starsFused;
+    }
+
+    /**
+     * @return the level
+     */
+    public String getLevel() {
+        return level;
+    }
+
+    /**
+     * @param level the level to set
+     */
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    /**
+     * @return the fullyEquiped
+     */
+    public boolean isFullyEquiped() {
+        return fullyEquiped;
+    }
+
+    /**
+     * @param fullyEquiped the fullyEquiped to set
+     */
+    public void setFullyEquiped(boolean fullyEquiped) {
+        this.fullyEquiped = fullyEquiped;
+    }
+
+    /**
+     * @return the inVault
+     */
+    public boolean isInVault() {
+        return inVault;
+    }
+
+    /**
+     * @param inVault the inVault to set
+     */
+    public void setInVault(boolean inVault) {
+        this.inVault = inVault;
+    }
+
+    /**
+     * @return the quantity
+     */
+    public String getQuantity() {
+        return quantity;
+    }
+
+    /**
+     * @param quantity the quantity to set
+     */
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
     }
 
 }

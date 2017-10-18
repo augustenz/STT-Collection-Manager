@@ -76,6 +76,41 @@
             </MenuItem>
           </SubComponents>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="importMenu">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Import"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="importCrewMenuItem">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+C"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/sttcollectionmanager/resources/import.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Import All Crew"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="importCrewMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="importCollectionMenuItem">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+X"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/sttcollectionmanager/resources/import.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Import Crew Collection"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="importCollectionMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
         <Menu class="javax.swing.JMenu" name="exportMenu">
           <Properties>
             <Property name="text" type="java.lang.String" value="Export"/>
@@ -230,12 +265,39 @@
             </MenuItem>
           </SubComponents>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="beerMenu">
+          <Properties>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                <LineBorder roundedCorners="true" thickness="2">
+                  <Color PropertyName="color" blue="66" green="66" red="0" type="rgb"/>
+                </LineBorder>
+              </Border>
+            </Property>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/sttcollectionmanager/resources/beer16x16.png"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value=" Beer! :) "/>
+            <Property name="toolTipText" type="java.lang.String" value="If you like this Software feel free to buy me a beer!"/>
+            <Property name="borderPainted" type="boolean" value="true"/>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Hand Cursor"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="beerMenuMouseClicked"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="beerMenuActionPerformed"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_AddingCodePre" type="java.lang.String" value="mainMenuBar.add(Box.createHorizontalGlue());"/>
+          </AuxValues>
+        </Menu>
       </SubComponents>
     </Menu>
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
-    <Property name="title" type="java.lang.String" value="STT Collection Manager"/>
+    <Property name="title" type="java.lang.String" value="STT Collection Manager v1.2"/>
     <Property name="size" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="[720, 576]"/>
     </Property>
@@ -299,7 +361,7 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="collectionScrollPane" alignment="0" pref="404" max="32767" attributes="0"/>
+                  <Component id="collectionScrollPane" alignment="0" pref="403" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -320,7 +382,7 @@
                     </Property>
                   </Properties>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTable()  {@Override public boolean isCellEditable(int row, int column) {switch(column){case 0: return false;case 1: return false;case 2: return false;case 3: return false;case 14: return false;case 15: return false;default: return true;}}             @Override             public Component prepareRenderer(TableCellRenderer renderer, int row, int col) {                 Component c = super.prepareRenderer(renderer, row, col);                 getColumn(&quot;Fully Equipped&quot;).setCellRenderer(                     new DefaultTableCellRenderer() {                         JCheckBox renderer = new JCheckBox();                          @Override                         public Component getTableCellRendererComponent(JTable table, Object value,                                 boolean isSelected, boolean hasFocus, int row, int column) {                             super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);                              if (value != null &amp;&amp; value instanceof Boolean) {                                  Boolean b = (Boolean) value;                                 renderer.setSelected(b);                                 renderer.setOpaque(true);                                  if (isSelected) {                                     renderer.setForeground(table.getSelectionForeground());                                     renderer.setBackground(table.getSelectionBackground());                                 } else {                                     Color bg = getBackground();                                     renderer.setForeground(getForeground());                                      renderer.setBackground(new Color(bg.getRed(), bg.getGreen(), bg.getBlue()));                                 }                                  renderer.setHorizontalAlignment(SwingConstants.CENTER);                                 return renderer;                             } else {                                 return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);                             }                         }                 });                 getColumn(&quot;In Vault&quot;).setCellRenderer(                     new DefaultTableCellRenderer() {                         JCheckBox renderer = new JCheckBox();                          @Override                         public Component getTableCellRendererComponent(JTable table, Object value,                                 boolean isSelected, boolean hasFocus, int row, int column) {                             super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);                              if (value != null &amp;&amp; value instanceof Boolean) {                                  Boolean b = (Boolean) value;                                 renderer.setSelected(b);                                 renderer.setOpaque(true);                                  if (isSelected) {                                     renderer.setForeground(table.getSelectionForeground());                                     renderer.setBackground(table.getSelectionBackground());                                 } else {                                     Color bg = getBackground();                                     renderer.setForeground(getForeground());                                      renderer.setBackground(new Color(bg.getRed(), bg.getGreen(), bg.getBlue()));                                 }                                  renderer.setHorizontalAlignment(SwingConstants.CENTER);                                 return renderer;                             } else {                                 return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);                             }                         }                 });                 getColumn(&quot;In Collection&quot;).setCellRenderer(                     new DefaultTableCellRenderer() {                         JCheckBox renderer = new JCheckBox();                          @Override                         public Component getTableCellRendererComponent(JTable table, Object value,                                 boolean isSelected, boolean hasFocus, int row, int column) {                             super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);                              if (value != null &amp;&amp; value instanceof Boolean) {                                  Boolean b = (Boolean) value;                                 renderer.setSelected(b);                                 renderer.setOpaque(true);                                  if (isSelected) {                                     renderer.setForeground(table.getSelectionForeground());                                     renderer.setBackground(table.getSelectionBackground());                                 } else {                                     Color bg = getBackground();                                     renderer.setForeground(getForeground());                                      renderer.setBackground(new Color(bg.getRed(), bg.getGreen(), bg.getBlue()));                                 }                                  renderer.setHorizontalAlignment(SwingConstants.CENTER);                                 return renderer;                             } else {                                 return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);                             }                         }                 });                  Integer stars = Integer.parseInt(getValueAt(row, 3).toString());                 switch(stars){                                  case 1: c.setBackground(hex2Rgb(&quot;#9b9b9b&quot;)); break;                     case 2: c.setBackground(hex2Rgb(&quot;#50aa3c&quot;)); break;                     case 3: c.setBackground(hex2Rgb(&quot;#5aaaff&quot;)); break;                     case 4: c.setBackground(hex2Rgb(&quot;#aa2deb&quot;)); break;                     case 5: c.setBackground(hex2Rgb(&quot;#fdd26a&quot;)); break;                        default: c.setBackground(Color.WHITE);                 }                 return c;             }         };"/>
+                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTable()  { public void changeSelection(&#xd;&#xa;        int row, int column, boolean toggle, boolean extend)&#xd;&#xa;    {&#xd;&#xa;        super.changeSelection(row, column, toggle, extend);&#xd;&#xa;&#xd;&#xa;        if (editCellAt(row, column))&#xd;&#xa;        {&#xd;&#xa;            Component editor = getEditorComponent();&#xd;&#xa;            editor.requestFocusInWindow();&#xd;&#xa;            if (editor == null || !(editor instanceof JTextComponent)) {&#xd;&#xa;                return;&#xd;&#xa;            }&#xd;&#xa;            else&#xd;&#xa;                ((JTextComponent)editor).selectAll();&#xd;&#xa;        } &#xd;&#xa;    } @Override public boolean isCellEditable(int row, int column) {switch(column){case 0: return false;case 1: return false;case 2: return false;case 3: return false;case 14: return false;case 15: return false;default: return true;}}             @Override             public Component prepareRenderer(TableCellRenderer renderer, int row, int col) {                 Component c = super.prepareRenderer(renderer, row, col);                 getColumn(&quot;Fully Equipped&quot;).setCellRenderer(                     new DefaultTableCellRenderer() {                         JCheckBox renderer = new JCheckBox();                          @Override                         public Component getTableCellRendererComponent(JTable table, Object value,                                 boolean isSelected, boolean hasFocus, int row, int column) {                             super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);                              if (value != null &amp;&amp; value instanceof Boolean) {                                  Boolean b = (Boolean) value;                                 renderer.setSelected(b);                                 renderer.setOpaque(true);                                  if (isSelected) {                                     renderer.setForeground(table.getSelectionForeground());                                     renderer.setBackground(table.getSelectionBackground());                                 } else {                                     Color bg = getBackground();                                     renderer.setForeground(getForeground());                                      renderer.setBackground(new Color(bg.getRed(), bg.getGreen(), bg.getBlue()));                                 }                                  renderer.setHorizontalAlignment(SwingConstants.CENTER);                                 return renderer;                             } else {                                 return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);                             }                         }                 });                 getColumn(&quot;In Vault&quot;).setCellRenderer(                     new DefaultTableCellRenderer() {                         JCheckBox renderer = new JCheckBox();                          @Override                         public Component getTableCellRendererComponent(JTable table, Object value,                                 boolean isSelected, boolean hasFocus, int row, int column) {                             super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);                              if (value != null &amp;&amp; value instanceof Boolean) {                                  Boolean b = (Boolean) value;                                 renderer.setSelected(b);                                 renderer.setOpaque(true);                                  if (isSelected) {                                     renderer.setForeground(table.getSelectionForeground());                                     renderer.setBackground(table.getSelectionBackground());                                 } else {                                     Color bg = getBackground();                                     renderer.setForeground(getForeground());                                      renderer.setBackground(new Color(bg.getRed(), bg.getGreen(), bg.getBlue()));                                 }                                  renderer.setHorizontalAlignment(SwingConstants.CENTER);                                 return renderer;                             } else {                                 return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);                             }                         }                 });                 getColumn(&quot;In Collection&quot;).setCellRenderer(                     new DefaultTableCellRenderer() {                         JCheckBox renderer = new JCheckBox();                          @Override                         public Component getTableCellRendererComponent(JTable table, Object value,                                 boolean isSelected, boolean hasFocus, int row, int column) {                             super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);                              if (value != null &amp;&amp; value instanceof Boolean) {                                  Boolean b = (Boolean) value;                                 renderer.setSelected(b);                                 renderer.setOpaque(true);                                  if (isSelected) {                                     renderer.setForeground(table.getSelectionForeground());                                     renderer.setBackground(table.getSelectionBackground());                                 } else {                                     Color bg = getBackground();                                     renderer.setForeground(getForeground());                                      renderer.setBackground(new Color(bg.getRed(), bg.getGreen(), bg.getBlue()));                                 }                                  renderer.setHorizontalAlignment(SwingConstants.CENTER);                                 return renderer;                             } else {                                 return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);                             }                         }                 });                  Integer stars = Integer.parseInt(getValueAt(row, 3).toString());                 switch(stars){                                  case 1: c.setBackground(hex2Rgb(&quot;#9b9b9b&quot;)); break;                     case 2: c.setBackground(hex2Rgb(&quot;#50aa3c&quot;)); break;                     case 3: c.setBackground(hex2Rgb(&quot;#5aaaff&quot;)); break;                     case 4: c.setBackground(hex2Rgb(&quot;#aa2deb&quot;)); break;                     case 5: c.setBackground(hex2Rgb(&quot;#fdd26a&quot;)); break;                        default: c.setBackground(Color.WHITE);                 }                 return c;             }         };"/>
                   </AuxValues>
                 </Component>
               </SubComponents>
@@ -347,7 +409,7 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="crewScrollPane" alignment="0" pref="404" max="32767" attributes="0"/>
+                  <Component id="crewScrollPane" alignment="0" pref="403" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -398,7 +460,7 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="logScrollPane" alignment="0" pref="404" max="32767" attributes="0"/>
+                  <Component id="logScrollPane" alignment="0" pref="403" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -451,7 +513,7 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="statsScrollPane" alignment="0" max="32767" attributes="0"/>
+                  <Component id="statsScrollPane" alignment="0" pref="403" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -716,6 +778,183 @@
                 </Container>
               </SubComponents>
             </Container>
+          </SubComponents>
+        </Container>
+        <Container class="javax.swing.JPanel" name="settingsPanel">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="Settings ">
+                <Property name="tabTitle" type="java.lang.String" value="Settings "/>
+                <Property name="tabIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/sttcollectionmanager/resources/settings4.png"/>
+                </Property>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
+          <SubComponents>
+            <Component class="javax.swing.JLabel" name="jLabel10">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Wiki Crew URL"/>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                  <GridBagConstraints gridX="0" gridY="4" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="2" insetsLeft="0" insetsBottom="10" insetsRight="10" anchor="10" weightX="0.0" weightY="0.0"/>
+                </Constraint>
+              </Constraints>
+            </Component>
+            <Component class="javax.swing.JTextField" name="wikiCrewURLTextField">
+              <Properties>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[500, 30]"/>
+                </Property>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                  <GridBagConstraints gridX="2" gridY="4" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="10" insetsRight="0" anchor="10" weightX="0.0" weightY="0.0"/>
+                </Constraint>
+              </Constraints>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel11">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Current Wiki Crew Pages Base URL"/>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                  <GridBagConstraints gridX="0" gridY="5" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="10" insetsRight="10" anchor="10" weightX="0.0" weightY="0.0"/>
+                </Constraint>
+              </Constraints>
+            </Component>
+            <Component class="javax.swing.JTextField" name="wikiCrewPagesBaseURLTextField">
+              <Properties>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[6, 30]"/>
+                </Property>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                  <GridBagConstraints gridX="2" gridY="5" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="10" insetsRight="0" anchor="10" weightX="0.0" weightY="0.0"/>
+                </Constraint>
+              </Constraints>
+            </Component>
+            <Component class="javax.swing.JButton" name="saveButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Save"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveButtonActionPerformed"/>
+              </Events>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                  <GridBagConstraints gridX="2" gridY="7" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="10" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="0.0" weightY="0.0"/>
+                </Constraint>
+              </Constraints>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel12">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Tahoma" size="11" style="1"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Current Wiki Crew URL:"/>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                  <GridBagConstraints gridX="0" gridY="0" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="2" insetsLeft="0" insetsBottom="10" insetsRight="10" anchor="10" weightX="0.0" weightY="0.0"/>
+                </Constraint>
+              </Constraints>
+            </Component>
+            <Component class="javax.swing.JLabel" name="currentWikiCrewURLLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="jLabel13"/>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                  <GridBagConstraints gridX="2" gridY="0" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="10" insetsRight="0" anchor="10" weightX="0.0" weightY="0.0"/>
+                </Constraint>
+              </Constraints>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel14">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Tahoma" size="11" style="1"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Current Wiki Crew Traits Base URL:"/>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                  <GridBagConstraints gridX="0" gridY="2" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="30" insetsRight="10" anchor="10" weightX="0.0" weightY="0.0"/>
+                </Constraint>
+              </Constraints>
+            </Component>
+            <Component class="javax.swing.JLabel" name="currentWikiCrewTraitsBaseURLLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="jLabel15"/>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                  <GridBagConstraints gridX="2" gridY="2" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="30" insetsRight="0" anchor="10" weightX="0.0" weightY="0.0"/>
+                </Constraint>
+              </Constraints>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel16">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Tahoma" size="11" style="1"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Current Wiki Crew Pages Base URL:"/>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                  <GridBagConstraints gridX="0" gridY="1" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="10" insetsRight="10" anchor="10" weightX="0.0" weightY="0.0"/>
+                </Constraint>
+              </Constraints>
+            </Component>
+            <Component class="javax.swing.JLabel" name="currentWikiCrewPagesBaseURLLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="jLabel17"/>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                  <GridBagConstraints gridX="2" gridY="1" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="10" insetsRight="0" anchor="10" weightX="0.0" weightY="0.0"/>
+                </Constraint>
+              </Constraints>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel18">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Current Wiki Crew Traits Base URL"/>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                  <GridBagConstraints gridX="0" gridY="6" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="10" anchor="10" weightX="0.0" weightY="0.0"/>
+                </Constraint>
+              </Constraints>
+            </Component>
+            <Component class="javax.swing.JTextField" name="wikiCrewTraitsBaseURLTextField">
+              <Properties>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[6, 30]"/>
+                </Property>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                  <GridBagConstraints gridX="2" gridY="6" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="0.0" weightY="0.0"/>
+                </Constraint>
+              </Constraints>
+            </Component>
+            <Component class="javax.swing.JButton" name="defaultsButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Defaults"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="defaultsButtonActionPerformed"/>
+              </Events>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                  <GridBagConstraints gridX="3" gridY="7" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="10" insetsLeft="10" insetsBottom="0" insetsRight="0" anchor="10" weightX="0.0" weightY="0.0"/>
+                </Constraint>
+              </Constraints>
+            </Component>
           </SubComponents>
         </Container>
       </SubComponents>

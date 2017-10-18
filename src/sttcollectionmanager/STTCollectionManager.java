@@ -35,6 +35,8 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -60,24 +62,24 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javafx.embed.swing.JFXPanel;
 import javax.imageio.ImageIO;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
+import javax.swing.Box;
 import javax.swing.DefaultCellEditor;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.InputMap;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
 import javax.swing.RowSorter;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -96,6 +98,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import javax.swing.text.JTextComponent;
 
 public class STTCollectionManager extends javax.swing.JFrame {
 
@@ -171,6 +174,12 @@ public class STTCollectionManager extends javax.swing.JFrame {
         //if(System.getProperty("javafx.runtime.version").isEmpty())
             //JOptionPane.showMessageDialog(this,"JavaFX not found, please install the latest JRE. If you are not using Oracle's JRE, JavaFX may not be included (OpenJDK for example).\nIn that case you may need to install JavaFX manually (OpenJFX for example).\nCharts won't work and trying to open them may crash the application if JavaFX isn't installed.","Info",1);
         createCharts();
+        
+        String SQL = "SELECT Settings.Value FROM STTCollectionManager.Settings WHERE Settings.setting='firstRun'";
+        DefaultTableModel firstRunSettingModel = sqlConnectionBridge.query(SQL,"firstRun");
+        if(firstRunSettingModel.getValueAt(0, 0).equals("true")) {
+            resolveFirstAddToCollectionBug();
+        }
     }
 
     /**
@@ -186,7 +195,22 @@ public class STTCollectionManager extends javax.swing.JFrame {
         mainTabbedPane = new javax.swing.JTabbedPane();
         collectionPanel = new javax.swing.JPanel();
         collectionScrollPane = new javax.swing.JScrollPane();
-        crewCollectionTable = new JTable()  {@Override public boolean isCellEditable(int row, int column) {switch(column){case 0: return false;case 1: return false;case 2: return false;case 3: return false;case 14: return false;case 15: return false;default: return true;}}             @Override             public Component prepareRenderer(TableCellRenderer renderer, int row, int col) {                 Component c = super.prepareRenderer(renderer, row, col);                 getColumn("Fully Equipped").setCellRenderer(                     new DefaultTableCellRenderer() {                         JCheckBox renderer = new JCheckBox();                          @Override                         public Component getTableCellRendererComponent(JTable table, Object value,                                 boolean isSelected, boolean hasFocus, int row, int column) {                             super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);                              if (value != null && value instanceof Boolean) {                                  Boolean b = (Boolean) value;                                 renderer.setSelected(b);                                 renderer.setOpaque(true);                                  if (isSelected) {                                     renderer.setForeground(table.getSelectionForeground());                                     renderer.setBackground(table.getSelectionBackground());                                 } else {                                     Color bg = getBackground();                                     renderer.setForeground(getForeground());                                      renderer.setBackground(new Color(bg.getRed(), bg.getGreen(), bg.getBlue()));                                 }                                  renderer.setHorizontalAlignment(SwingConstants.CENTER);                                 return renderer;                             } else {                                 return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);                             }                         }                 });                 getColumn("In Vault").setCellRenderer(                     new DefaultTableCellRenderer() {                         JCheckBox renderer = new JCheckBox();                          @Override                         public Component getTableCellRendererComponent(JTable table, Object value,                                 boolean isSelected, boolean hasFocus, int row, int column) {                             super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);                              if (value != null && value instanceof Boolean) {                                  Boolean b = (Boolean) value;                                 renderer.setSelected(b);                                 renderer.setOpaque(true);                                  if (isSelected) {                                     renderer.setForeground(table.getSelectionForeground());                                     renderer.setBackground(table.getSelectionBackground());                                 } else {                                     Color bg = getBackground();                                     renderer.setForeground(getForeground());                                      renderer.setBackground(new Color(bg.getRed(), bg.getGreen(), bg.getBlue()));                                 }                                  renderer.setHorizontalAlignment(SwingConstants.CENTER);                                 return renderer;                             } else {                                 return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);                             }                         }                 });                 getColumn("In Collection").setCellRenderer(                     new DefaultTableCellRenderer() {                         JCheckBox renderer = new JCheckBox();                          @Override                         public Component getTableCellRendererComponent(JTable table, Object value,                                 boolean isSelected, boolean hasFocus, int row, int column) {                             super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);                              if (value != null && value instanceof Boolean) {                                  Boolean b = (Boolean) value;                                 renderer.setSelected(b);                                 renderer.setOpaque(true);                                  if (isSelected) {                                     renderer.setForeground(table.getSelectionForeground());                                     renderer.setBackground(table.getSelectionBackground());                                 } else {                                     Color bg = getBackground();                                     renderer.setForeground(getForeground());                                      renderer.setBackground(new Color(bg.getRed(), bg.getGreen(), bg.getBlue()));                                 }                                  renderer.setHorizontalAlignment(SwingConstants.CENTER);                                 return renderer;                             } else {                                 return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);                             }                         }                 });                  Integer stars = Integer.parseInt(getValueAt(row, 3).toString());                 switch(stars){                                  case 1: c.setBackground(hex2Rgb("#9b9b9b")); break;                     case 2: c.setBackground(hex2Rgb("#50aa3c")); break;                     case 3: c.setBackground(hex2Rgb("#5aaaff")); break;                     case 4: c.setBackground(hex2Rgb("#aa2deb")); break;                     case 5: c.setBackground(hex2Rgb("#fdd26a")); break;                        default: c.setBackground(Color.WHITE);                 }                 return c;             }         };
+        crewCollectionTable = new JTable()  { public void changeSelection(
+            int row, int column, boolean toggle, boolean extend)
+        {
+            super.changeSelection(row, column, toggle, extend);
+
+            if (editCellAt(row, column))
+            {
+                Component editor = getEditorComponent();
+                editor.requestFocusInWindow();
+                if (editor == null || !(editor instanceof JTextComponent)) {
+                    return;
+                }
+                else
+                ((JTextComponent)editor).selectAll();
+            } 
+        } @Override public boolean isCellEditable(int row, int column) {switch(column){case 0: return false;case 1: return false;case 2: return false;case 3: return false;case 14: return false;case 15: return false;default: return true;}}             @Override             public Component prepareRenderer(TableCellRenderer renderer, int row, int col) {                 Component c = super.prepareRenderer(renderer, row, col);                 getColumn("Fully Equipped").setCellRenderer(                     new DefaultTableCellRenderer() {                         JCheckBox renderer = new JCheckBox();                          @Override                         public Component getTableCellRendererComponent(JTable table, Object value,                                 boolean isSelected, boolean hasFocus, int row, int column) {                             super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);                              if (value != null && value instanceof Boolean) {                                  Boolean b = (Boolean) value;                                 renderer.setSelected(b);                                 renderer.setOpaque(true);                                  if (isSelected) {                                     renderer.setForeground(table.getSelectionForeground());                                     renderer.setBackground(table.getSelectionBackground());                                 } else {                                     Color bg = getBackground();                                     renderer.setForeground(getForeground());                                      renderer.setBackground(new Color(bg.getRed(), bg.getGreen(), bg.getBlue()));                                 }                                  renderer.setHorizontalAlignment(SwingConstants.CENTER);                                 return renderer;                             } else {                                 return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);                             }                         }                 });                 getColumn("In Vault").setCellRenderer(                     new DefaultTableCellRenderer() {                         JCheckBox renderer = new JCheckBox();                          @Override                         public Component getTableCellRendererComponent(JTable table, Object value,                                 boolean isSelected, boolean hasFocus, int row, int column) {                             super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);                              if (value != null && value instanceof Boolean) {                                  Boolean b = (Boolean) value;                                 renderer.setSelected(b);                                 renderer.setOpaque(true);                                  if (isSelected) {                                     renderer.setForeground(table.getSelectionForeground());                                     renderer.setBackground(table.getSelectionBackground());                                 } else {                                     Color bg = getBackground();                                     renderer.setForeground(getForeground());                                      renderer.setBackground(new Color(bg.getRed(), bg.getGreen(), bg.getBlue()));                                 }                                  renderer.setHorizontalAlignment(SwingConstants.CENTER);                                 return renderer;                             } else {                                 return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);                             }                         }                 });                 getColumn("In Collection").setCellRenderer(                     new DefaultTableCellRenderer() {                         JCheckBox renderer = new JCheckBox();                          @Override                         public Component getTableCellRendererComponent(JTable table, Object value,                                 boolean isSelected, boolean hasFocus, int row, int column) {                             super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);                              if (value != null && value instanceof Boolean) {                                  Boolean b = (Boolean) value;                                 renderer.setSelected(b);                                 renderer.setOpaque(true);                                  if (isSelected) {                                     renderer.setForeground(table.getSelectionForeground());                                     renderer.setBackground(table.getSelectionBackground());                                 } else {                                     Color bg = getBackground();                                     renderer.setForeground(getForeground());                                      renderer.setBackground(new Color(bg.getRed(), bg.getGreen(), bg.getBlue()));                                 }                                  renderer.setHorizontalAlignment(SwingConstants.CENTER);                                 return renderer;                             } else {                                 return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);                             }                         }                 });                  Integer stars = Integer.parseInt(getValueAt(row, 3).toString());                 switch(stars){                                  case 1: c.setBackground(hex2Rgb("#9b9b9b")); break;                     case 2: c.setBackground(hex2Rgb("#50aa3c")); break;                     case 3: c.setBackground(hex2Rgb("#5aaaff")); break;                     case 4: c.setBackground(hex2Rgb("#aa2deb")); break;                     case 5: c.setBackground(hex2Rgb("#fdd26a")); break;                        default: c.setBackground(Color.WHITE);                 }                 return c;             }         };
         crewPanel = new javax.swing.JPanel();
         crewScrollPane = new javax.swing.JScrollPane();
         crewTable = new JTable()  {@Override public boolean isCellEditable(int row, int column) {switch(column){case 0: return false;case 1: return false;case 2: return false;case 3: return false;case 4: return false;case 5: return false;case 6: return false;case 7: return false;case 8: return false;case 9: return false;case 10: return false;case 11: return false;default: return true;}}             @Override             public Component prepareRenderer(TableCellRenderer renderer, int row, int col) {                 Component c = super.prepareRenderer(renderer, row, col);                 getColumn("In Collection").setCellRenderer(                     new DefaultTableCellRenderer() {                         JCheckBox renderer = new JCheckBox();                          @Override                         public Component getTableCellRendererComponent(JTable table, Object value,                                 boolean isSelected, boolean hasFocus, int row, int column) {                             super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);                              if (value != null && value instanceof Boolean) {                                  Boolean b = (Boolean) value;                                 renderer.setSelected(b);                                 renderer.setOpaque(true);                                  if (isSelected) {                                     renderer.setForeground(table.getSelectionForeground());                                     renderer.setBackground(table.getSelectionBackground());                                 } else {                                     Color bg = getBackground();                                     renderer.setForeground(getForeground());                                      renderer.setBackground(new Color(bg.getRed(), bg.getGreen(), bg.getBlue()));                                 }                                  renderer.setHorizontalAlignment(SwingConstants.CENTER);                                 return renderer;                             } else {                                 return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);                             }                         }                 });                  Integer stars = Integer.parseInt(getValueAt(row, 3).toString());                 switch(stars){                                  case 1: c.setBackground(hex2Rgb("#9b9b9b")); break;                     case 2: c.setBackground(hex2Rgb("#50aa3c")); break;                     case 3: c.setBackground(hex2Rgb("#5aaaff")); break;                     case 4: c.setBackground(hex2Rgb("#aa2deb")); break;                     case 5: c.setBackground(hex2Rgb("#fdd26a")); break;                        default: c.setBackground(Color.WHITE);                 }                 return c;             }         };
@@ -218,6 +242,21 @@ public class STTCollectionManager extends javax.swing.JFrame {
         averageLevelValueLabel = new javax.swing.JLabel();
         jSeparator3 = new javax.swing.JSeparator();
         crewSlotsTextField = new javax.swing.JTextField();
+        settingsPanel = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        wikiCrewURLTextField = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        wikiCrewPagesBaseURLTextField = new javax.swing.JTextField();
+        saveButton = new javax.swing.JButton();
+        jLabel12 = new javax.swing.JLabel();
+        currentWikiCrewURLLabel = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        currentWikiCrewTraitsBaseURLLabel = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        currentWikiCrewPagesBaseURLLabel = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        wikiCrewTraitsBaseURLTextField = new javax.swing.JTextField();
+        defaultsButton = new javax.swing.JButton();
         mainMenuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         rebuildMenuItem = new javax.swing.JMenuItem();
@@ -225,6 +264,9 @@ public class STTCollectionManager extends javax.swing.JFrame {
         exitMenuItem = new javax.swing.JMenuItem();
         searchMenu = new javax.swing.JMenu();
         searchMenuItem = new javax.swing.JMenuItem();
+        importMenu = new javax.swing.JMenu();
+        importCrewMenuItem = new javax.swing.JMenuItem();
+        importCollectionMenuItem = new javax.swing.JMenuItem();
         exportMenu = new javax.swing.JMenu();
         exportCrewMenuItem = new javax.swing.JMenuItem();
         exportCollectionMenuItem = new javax.swing.JMenuItem();
@@ -238,9 +280,10 @@ public class STTCollectionManager extends javax.swing.JFrame {
         helpMenuItem = new javax.swing.JMenuItem();
         infoMenuItem = new javax.swing.JMenuItem();
         aboutMenuItem = new javax.swing.JMenuItem();
+        beerMenu = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("STT Collection Manager");
+        setTitle("STT Collection Manager v1.2");
         setSize(new java.awt.Dimension(720, 576));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -277,7 +320,7 @@ public class STTCollectionManager extends javax.swing.JFrame {
         );
         collectionPanelLayout.setVerticalGroup(
             collectionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(collectionScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
+            .addComponent(collectionScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
         );
 
         mainTabbedPane.addTab("Collection ", new javax.swing.ImageIcon(getClass().getResource("/sttcollectionmanager/resources/table.png")), collectionPanel); // NOI18N
@@ -304,7 +347,7 @@ public class STTCollectionManager extends javax.swing.JFrame {
         );
         crewPanelLayout.setVerticalGroup(
             crewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(crewScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
+            .addComponent(crewScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
         );
 
         mainTabbedPane.addTab("Crew ", new javax.swing.ImageIcon(getClass().getResource("/sttcollectionmanager/resources/table.png")), crewPanel); // NOI18N
@@ -321,7 +364,7 @@ public class STTCollectionManager extends javax.swing.JFrame {
         );
         logPanelLayout.setVerticalGroup(
             logPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(logScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
+            .addComponent(logScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
         );
 
         mainTabbedPane.addTab("Log ", new javax.swing.ImageIcon(getClass().getResource("/sttcollectionmanager/resources/log3.png")), logPanel); // NOI18N
@@ -518,10 +561,138 @@ public class STTCollectionManager extends javax.swing.JFrame {
         );
         statsPanelLayout.setVerticalGroup(
             statsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(statsScrollPane)
+            .addComponent(statsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
         );
 
         mainTabbedPane.addTab("Stats ", new javax.swing.ImageIcon(getClass().getResource("/sttcollectionmanager/resources/stats2.png")), statsPanel); // NOI18N
+
+        settingsPanel.setLayout(new java.awt.GridBagLayout());
+
+        jLabel10.setText("Wiki Crew URL");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(2, 0, 10, 10);
+        settingsPanel.add(jLabel10, gridBagConstraints);
+
+        wikiCrewURLTextField.setPreferredSize(new java.awt.Dimension(500, 30));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 0);
+        settingsPanel.add(wikiCrewURLTextField, gridBagConstraints);
+
+        jLabel11.setText("Current Wiki Crew Pages Base URL");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 10);
+        settingsPanel.add(jLabel11, gridBagConstraints);
+
+        wikiCrewPagesBaseURLTextField.setPreferredSize(new java.awt.Dimension(6, 30));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 0);
+        settingsPanel.add(wikiCrewPagesBaseURLTextField, gridBagConstraints);
+
+        saveButton.setText("Save");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
+        settingsPanel.add(saveButton, gridBagConstraints);
+
+        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel12.setText("Current Wiki Crew URL:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(2, 0, 10, 10);
+        settingsPanel.add(jLabel12, gridBagConstraints);
+
+        currentWikiCrewURLLabel.setText("jLabel13");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 0);
+        settingsPanel.add(currentWikiCrewURLLabel, gridBagConstraints);
+
+        jLabel14.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel14.setText("Current Wiki Crew Traits Base URL:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 10);
+        settingsPanel.add(jLabel14, gridBagConstraints);
+
+        currentWikiCrewTraitsBaseURLLabel.setText("jLabel15");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 0);
+        settingsPanel.add(currentWikiCrewTraitsBaseURLLabel, gridBagConstraints);
+
+        jLabel16.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel16.setText("Current Wiki Crew Pages Base URL:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 10);
+        settingsPanel.add(jLabel16, gridBagConstraints);
+
+        currentWikiCrewPagesBaseURLLabel.setText("jLabel17");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 0);
+        settingsPanel.add(currentWikiCrewPagesBaseURLLabel, gridBagConstraints);
+
+        jLabel18.setText("Current Wiki Crew Traits Base URL");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
+        settingsPanel.add(jLabel18, gridBagConstraints);
+
+        wikiCrewTraitsBaseURLTextField.setPreferredSize(new java.awt.Dimension(6, 30));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        settingsPanel.add(wikiCrewTraitsBaseURLTextField, gridBagConstraints);
+
+        defaultsButton.setText("Defaults");
+        defaultsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                defaultsButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 0);
+        settingsPanel.add(defaultsButton, gridBagConstraints);
+
+        mainTabbedPane.addTab("Settings ", new javax.swing.ImageIcon(getClass().getResource("/sttcollectionmanager/resources/settings4.png")), settingsPanel); // NOI18N
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.RELATIVE;
@@ -581,6 +752,30 @@ public class STTCollectionManager extends javax.swing.JFrame {
         searchMenu.add(searchMenuItem);
 
         mainMenuBar.add(searchMenu);
+
+        importMenu.setText("Import");
+
+        importCrewMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
+        importCrewMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sttcollectionmanager/resources/import.png"))); // NOI18N
+        importCrewMenuItem.setText("Import All Crew");
+        importCrewMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                importCrewMenuItemActionPerformed(evt);
+            }
+        });
+        importMenu.add(importCrewMenuItem);
+
+        importCollectionMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
+        importCollectionMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sttcollectionmanager/resources/import.png"))); // NOI18N
+        importCollectionMenuItem.setText("Import Crew Collection");
+        importCollectionMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                importCollectionMenuItemActionPerformed(evt);
+            }
+        });
+        importMenu.add(importCollectionMenuItem);
+
+        mainMenuBar.add(importMenu);
 
         exportMenu.setText("Export");
 
@@ -689,13 +884,42 @@ public class STTCollectionManager extends javax.swing.JFrame {
 
         mainMenuBar.add(helpMenu);
 
+        beerMenu.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 102, 102), 2, true));
+        beerMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sttcollectionmanager/resources/beer16x16.png"))); // NOI18N
+        beerMenu.setText(" Beer! :) ");
+        beerMenu.setToolTipText("If you like this Software feel free to buy me a beer!");
+        beerMenu.setBorderPainted(true);
+        beerMenu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        beerMenu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                beerMenuMouseClicked(evt);
+            }
+        });
+        beerMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                beerMenuActionPerformed(evt);
+            }
+        });
+        mainMenuBar.add(Box.createHorizontalGlue());
+        mainMenuBar.add(beerMenu);
+
         setJMenuBar(mainMenuBar);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void rebuildMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rebuildMenuItemActionPerformed
-        buildDB();
+        String message = "Crew data will be fetched from the Wiki, it may take a few seconds, local Crew data (not the Collection) will be overwritten/purged!\n\nContinue?";
+        String title = "Download crew data";
+        int reply = JOptionPane.showConfirmDialog(this, message, title, JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.YES_OPTION) {
+            buildDB();
+            fillCrewDBTableFromWiki();
+        }
+        else {
+           JOptionPane.showMessageDialog(this, "Crew data not downloaded, please import Crew Data from a file (Import menu item).");
+           return;
+        }
         fillCrewTable("no search", null);
         refreshStats=true;
         refreshCharts=true;
@@ -742,7 +966,7 @@ public class STTCollectionManager extends javax.swing.JFrame {
                     +"<p><p><b>Operating system version:</b> "+System.getProperty("os.version")
                     +"<p><p><b>User working directory:</b> "+System.getProperty("user.dir")
                     +"</HTML>";
-            System.out.println(info);
+            //System.out.println(info);
             JOptionPane.showMessageDialog(this,info,"Info",1);
         }
         catch (Exception e) {
@@ -770,15 +994,17 @@ public class STTCollectionManager extends javax.swing.JFrame {
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
     private void refreshMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshMenuItemActionPerformed
-        java.util.List<? extends RowSorter.SortKey> crewSortkeys = crewTable.getRowSorter().getSortKeys();
-        if(dialog==null || !dialog.isVisible())
-            fillCrewTable("no search", null);
-        crewTable.getRowSorter().setSortKeys(crewSortkeys);
-        
-        java.util.List<? extends RowSorter.SortKey> crewCollectionSortkeys = crewCollectionTable.getRowSorter().getSortKeys();
-        if(dialog==null || !dialog.isVisible())
-            fillCrewCollectionTable("no search", null);
-        crewCollectionTable.getRowSorter().setSortKeys(crewCollectionSortkeys);
+        if(crewTable.getModel().getRowCount()!=0) {
+            java.util.List<? extends RowSorter.SortKey> crewSortkeys = crewTable.getRowSorter().getSortKeys();
+            if(dialog==null || !dialog.isVisible())
+                fillCrewTable("no search", null);
+            crewTable.getRowSorter().setSortKeys(crewSortkeys);
+
+            java.util.List<? extends RowSorter.SortKey> crewCollectionSortkeys = crewCollectionTable.getRowSorter().getSortKeys();
+            if(dialog==null || !dialog.isVisible())
+                fillCrewCollectionTable("no search", null);
+            crewCollectionTable.getRowSorter().setSortKeys(crewCollectionSortkeys);
+        }
     }//GEN-LAST:event_refreshMenuItemActionPerformed
 
     private void increaseTextSizeMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_increaseTextSizeMenuItemActionPerformed
@@ -972,6 +1198,75 @@ public class STTCollectionManager extends javax.swing.JFrame {
         sqlConnectionBridge.update(SQL);
     }//GEN-LAST:event_changeFontMenuItemActionPerformed
 
+    private void beerMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_beerMenuActionPerformed
+        URI uri = null;
+        try {
+            uri = new URI("https://www.paypal.me/augustenz");
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(AboutJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            open(uri.toURL());
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(STTCollectionManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_beerMenuActionPerformed
+
+    private void beerMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_beerMenuMouseClicked
+        URI uri = null;
+        try {
+            uri = new URI("https://www.paypal.me/augustenz");
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(AboutJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            open(uri.toURL());
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(STTCollectionManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_beerMenuMouseClicked
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        SQLConnectionBridge sqlConnectionBridge = new SQLConnectionBridge(jdbcUrl,user,password,sttCollectionManager);
+        String SQL;
+        
+        SQL="UPDATE STTCollectionManager.Settings SET value='"+wikiCrewURLTextField.getText()+"' WHERE Settings.setting='wikiCrewURL'";
+        sqlConnectionBridge.update(SQL);
+        SQL="UPDATE STTCollectionManager.Settings SET value='"+wikiCrewPagesBaseURLTextField.getText()+"' WHERE Settings.setting='wikiCrewPagesBaseURL'";
+        sqlConnectionBridge.update(SQL);
+        SQL="UPDATE STTCollectionManager.Settings SET value='"+wikiCrewTraitsBaseURLTextField.getText()+"' WHERE Settings.setting='wikiCrewTraitsBaseURL'";
+        sqlConnectionBridge.update(SQL);
+        
+        SQL = "SELECT Settings.value FROM STTCollectionManager.Settings WHERE Settings.setting='wikiCrewURL'";
+        DefaultTableModel wikiCrewURLSettingModel = sqlConnectionBridge.query(SQL,"wikiCrewURL");
+        currentWikiCrewURLLabel.setText((String)wikiCrewURLSettingModel.getValueAt(0, 0));     
+        SQL = "SELECT Settings.value FROM STTCollectionManager.Settings WHERE Settings.setting='wikiCrewPagesBaseURL'";
+        DefaultTableModel wikiCrewPagesBaseURLSettingModel = sqlConnectionBridge.query(SQL,"wikiCrewPagesBaseURL");
+        currentWikiCrewPagesBaseURLLabel.setText((String)(wikiCrewPagesBaseURLSettingModel.getValueAt(0, 0)));
+        SQL = "SELECT Settings.value FROM STTCollectionManager.Settings WHERE Settings.setting='wikiCrewTraitsBaseURL'";
+        DefaultTableModel wikiCrewTraitsBaseURLSettingModel = sqlConnectionBridge.query(SQL,"wikiCrewTraitsBaseURL");
+        currentWikiCrewTraitsBaseURLLabel.setText((String)(wikiCrewTraitsBaseURLSettingModel.getValueAt(0, 0)));
+    }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void importCrewMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importCrewMenuItemActionPerformed
+        fillCrewDBTableFromFile();
+        fillCrewTable("no search", null);
+    }//GEN-LAST:event_importCrewMenuItemActionPerformed
+
+    private void importCollectionMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importCollectionMenuItemActionPerformed
+        fillCollectionDBTableFromFile();
+    }//GEN-LAST:event_importCollectionMenuItemActionPerformed
+
+    private void defaultsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defaultsButtonActionPerformed
+        currentWikiCrewURLLabel.setText("https://stt.wiki/wiki/Crew?action=raw");
+        wikiCrewURLTextField.setText("https://stt.wiki/wiki/Crew?action=raw");      
+        currentWikiCrewPagesBaseURLLabel.setText("https://stt.wiki/wiki/");
+        wikiCrewPagesBaseURLTextField.setText("https://stt.wiki/wiki/");
+        currentWikiCrewTraitsBaseURLLabel.setText("https://stt.wiki/wiki/Category:");
+        wikiCrewTraitsBaseURLTextField.setText("https://stt.wiki/wiki/Category:");
+        saveButtonActionPerformed(evt);
+    }//GEN-LAST:event_defaultsButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1013,6 +1308,7 @@ public class STTCollectionManager extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JLabel averageLevelValueLabel;
+    private javax.swing.JMenu beerMenu;
     private javax.swing.JMenuItem changeFontMenuItem;
     private javax.swing.JPanel chartsPanel;
     private javax.swing.JPanel collectionPanel;
@@ -1022,7 +1318,11 @@ public class STTCollectionManager extends javax.swing.JFrame {
     private javax.swing.JScrollPane crewScrollPane;
     private javax.swing.JTextField crewSlotsTextField;
     private javax.swing.JTable crewTable;
+    private javax.swing.JLabel currentWikiCrewPagesBaseURLLabel;
+    private javax.swing.JLabel currentWikiCrewTraitsBaseURLLabel;
+    private javax.swing.JLabel currentWikiCrewURLLabel;
     private javax.swing.JMenuItem decreaseTextSizeMenuItem;
+    private javax.swing.JButton defaultsButton;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenuItem exportCollectionMenuItem;
     private javax.swing.JMenuItem exportCrewMenuItem;
@@ -1031,10 +1331,19 @@ public class STTCollectionManager extends javax.swing.JFrame {
     private javax.swing.JLabel fullyEquippedValueLabel;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JMenuItem helpMenuItem;
+    private javax.swing.JMenuItem importCollectionMenuItem;
+    private javax.swing.JMenuItem importCrewMenuItem;
+    private javax.swing.JMenu importMenu;
     private javax.swing.JLabel inVaultValueLabel;
     private javax.swing.JMenuItem increaseTextSizeMenuItem;
     private javax.swing.JMenuItem infoMenuItem;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1052,8 +1361,10 @@ public class STTCollectionManager extends javax.swing.JFrame {
     private javax.swing.JMenuItem rebuildMenuItem;
     private javax.swing.JMenuItem refreshMenuItem;
     private javax.swing.JMenuItem resetTextSizeMenuItem;
+    private javax.swing.JButton saveButton;
     private javax.swing.JMenu searchMenu;
     private javax.swing.JMenuItem searchMenuItem;
+    private javax.swing.JPanel settingsPanel;
     private javax.swing.JMenu skinMenu;
     private javax.swing.JLabel slotsUsedLabel;
     private javax.swing.JLabel slotsUsedValueLabel;
@@ -1066,6 +1377,9 @@ public class STTCollectionManager extends javax.swing.JFrame {
     private javax.swing.JScrollPane statsScrollPane;
     private javax.swing.JPanel statsScrollablePanel;
     private javax.swing.JMenu textSizeMenu;
+    private javax.swing.JTextField wikiCrewPagesBaseURLTextField;
+    private javax.swing.JTextField wikiCrewTraitsBaseURLTextField;
+    private javax.swing.JTextField wikiCrewURLTextField;
     // End of variables declaration//GEN-END:variables
     private DBConnection conn;
     private String protocol="jdbc";
@@ -1155,7 +1469,7 @@ public class STTCollectionManager extends javax.swing.JFrame {
 
             @Override
             public String getDescription() {
-                    return "HTML Files";
+                    return "HTML Files (*.html)";
             }
         };
         fc.addChoosableFileFilter(filter);
@@ -1171,7 +1485,7 @@ public class STTCollectionManager extends javax.swing.JFrame {
 
             @Override
             public String getDescription() {
-                    return "Excel Files";
+                    return "Excel Files (*.xls)";
             }
         };
         fc.addChoosableFileFilter(filter);
@@ -1188,7 +1502,7 @@ public class STTCollectionManager extends javax.swing.JFrame {
 
             @Override
             public String getDescription() {
-                    return "Text Files";
+                    return "Text Files (*.txt)";
             }
         };
         fc.addChoosableFileFilter(filter);
@@ -1294,16 +1608,32 @@ public class STTCollectionManager extends javax.swing.JFrame {
             }
         }
     }
-    
-    class tableDataListener implements TableModelListener {
 
+    public void resolveFirstAddToCollectionBug() {
+        SQLConnectionBridge sqlConnectionBridge = new SQLConnectionBridge(jdbcUrl,user,password,sttCollectionManager);
+        String SQL="UPDATE STTCollectionManager.Settings SET value='false' WHERE Settings.setting='firstRun'";
+        sqlConnectionBridge.update(SQL);
+        SQL = "INSERT INTO STTCollectionManager.Collection(crewName, starsFused, level, fullyEquipped, inVault, cmd, dip, eng, med, sci, sec, quantity, incollection) VALUES ('Bartender Quark', '1', '1', 'false', 'false', '9', '22', '0', '0', '0', '9', '1', 'true')";
+        sqlConnectionBridge.update(SQL);
+        dataChangedRefreshComponents();
+        
+        SQL="DELETE FROM STTCollectionManager.Collection WHERE "
+        +"Collection.crewName='Bartender Quark' AND Collection.id=1";
+        sqlConnectionBridge.update(SQL);
+        dataChangedRefreshComponents();
+        SQL = "ALTER TABLE Collection ALTER COLUMN id RESTART WITH 1";
+        sqlConnectionBridge.update(SQL);
+        dataChangedRefreshComponents();
+    }
+    
+    class crewTableDataListener implements TableModelListener {
         @Override
         public void tableChanged(TableModelEvent e) {
             SQLConnectionBridge sqlConnectionBridge = new SQLConnectionBridge(jdbcUrl,user,password,sttCollectionManager);
             int row = e.getFirstRow();
             int column = e.getColumn();
 
-            DefaultTableModel model = (DefaultTableModel)e.getSource();
+            DefaultTableModel model = (DefaultTableModel)crewTable.getModel();
             
             int columnCount = model.getColumnCount();
             Boolean data = false;
@@ -1315,69 +1645,87 @@ public class STTCollectionManager extends javax.swing.JFrame {
             for (int i=0; i<columnCount-1; i++)
                 dataRow[i]=(model.getValueAt(row,i).toString());
             
-            //if(columnCount==13) {
-            if(model.equals((DefaultTableModel)crewTable.getModel())) {
-                dataRow[2] = "1";
-                dataRow[3] = "1";
-                dataRow[11] = "1";
-            }
+            dataRow[2] = "1";
+            dataRow[3] = "1";
+            dataRow[11] = "1";
             
             if(column==columnCount-1) {
                 if(data) {
-                    if(model.equals(crewTable.getModel())) {
-                        String SQL = "SELECT MAX (Collection.id) FROM STTCollectionManager.Collection";
-                        DefaultTableModel maxIdModel = sqlConnectionBridge.query(SQL,"ID");
-                        String id ="";
+                    String SQL;
+                    if(crewCollectionTable.getRowCount()>0) {
+                        SQL = "SELECT MAX (Collection.id) FROM STTCollectionManager.Collection";
+                        DefaultTableModel maxIdModel = sqlConnectionBridge.query(SQL,"ID");  
+                        
                         if(maxIdModel.getValueAt(0,0)!=null) {
-                            id = Integer.toString(Integer.parseInt(maxIdModel.getValueAt(0,0).toString())+1);
+                            String id = Integer.toString(Integer.parseInt(maxIdModel.getValueAt(0,0).toString())+1);
                             if(Integer.parseInt(id)>0)
                                 SQL = "ALTER TABLE Collection ALTER COLUMN id RESTART WITH "+id;
-                            else
-                                SQL = "ALTER TABLE Collection ALTER COLUMN id RESTART WITH "+1;
+                                sqlConnectionBridge.update(SQL);
                         }
+                    } else {
+                        SQL = "ALTER TABLE Collection ALTER COLUMN id RESTART WITH 1";
                         sqlConnectionBridge.update(SQL);
-                        SQL="INSERT INTO STTCollectionManager.Collection(crewName, starsFused, level, fullyEquipped, inVault, cmd, dip, eng, med, sci, sec, quantity, incollection) VALUES ('"+dataRow[1].replace("'", "''")+"', '"+dataRow[2]+"', '"+dataRow[3]+"', 'false', 'false', '"+dataRow[4]+"', '"+dataRow[5]+"', '"+dataRow[6]+"', '"+dataRow[7]+"', '"+dataRow[8]+"', '"+dataRow[9]+"', '"+dataRow[11]+"', '"+data+"')";
-                        sqlConnectionBridge.update(SQL);
+                    }
 
-                        dataChangedRefreshComponents();
-                    }
-                } else {
-                    if(model.equals((DefaultTableModel)crewCollectionTable.getModel())) {
-                        String SQL="DELETE FROM STTCollectionManager.Collection WHERE "
-                        +"Collection.crewName='"+dataRow[1].replace("'", "''")+"' AND Collection.id="+dataRow[0]+"";
-                        sqlConnectionBridge.update(SQL);
+                    SQL="INSERT INTO STTCollectionManager.Collection(crewName, starsFused, level, fullyEquipped, inVault, cmd, dip, eng, med, sci, sec, quantity, incollection) VALUES ('"+dataRow[1].replace("'", "''")+"', '"+dataRow[2]+"', '"+dataRow[3]+"', 'false', 'false', '"+dataRow[4]+"', '"+dataRow[5]+"', '"+dataRow[6]+"', '"+dataRow[7]+"', '"+dataRow[8]+"', '"+dataRow[9]+"', '"+dataRow[11]+"', '"+data+"')";
+                    sqlConnectionBridge.update(SQL);
 
-                        dataChangedRefreshComponents();
-                    
-                    }
-                    else {
-                        fillCrewTable("no search", null); //"Disable" checked checkbox                     
-                    }
-                    
+                    dataChangedRefreshComponents();
+                }else {
+                    model.setValueAt(true, row, columnCount-1); //Keeps checkbox checked. Adds copies to Collection.
+                    //fillCrewTable("no search", null); //"Disable" checked checkbox                     
                 } 
             }
+        }
+    }
+    
+    class crewCollectionTableDataListener implements TableModelListener {
+
+        @Override
+        public void tableChanged(TableModelEvent e) {
+            SQLConnectionBridge sqlConnectionBridge = new SQLConnectionBridge(jdbcUrl,user,password,sttCollectionManager);
+            int row = e.getFirstRow();
+            int column = e.getColumn();
+
+            DefaultTableModel model = (DefaultTableModel)crewCollectionTable.getModel();
+            
+            int columnCount = model.getColumnCount();
+            
+            Boolean data = false;
+            if(row>-1 && column>-1)
+                data = (Boolean)model.getValueAt(row, columnCount-1);
+            
+            String[] dataRow=new String[columnCount-1];
+ 
+            for (int i=0; i<columnCount-1; i++)
+                dataRow[i]=(model.getValueAt(row,i).toString());
+            
+            if(column==columnCount-1) {
+                String SQL="DELETE FROM STTCollectionManager.Collection WHERE "
+                +"Collection.crewName='"+dataRow[1].replace("'", "''")+"' AND Collection.id="+dataRow[0]+"";
+                sqlConnectionBridge.update(SQL);
+
+                dataChangedRefreshComponents();
+            }
             else {
-                //if(columnCount!=13) {
-                if(model.equals((DefaultTableModel)crewCollectionTable.getModel())) {
-                    String SQL="UPDATE STTCollectionManager.Collection SET starsFused='"+dataRow[4]+"', level='"+dataRow[5]+"', fullyEquipped='"+dataRow[6]+"', inVault='"+dataRow[7]+"', cmd='"+dataRow[8]+"', dip='"+dataRow[9]+"', eng='"+dataRow[10]+"', med='"+dataRow[11]+"', sci='"+dataRow[12]+"', sec='"+dataRow[13]+"', quantity='"+dataRow[16]+"' WHERE "
-                    +"Collection.crewName='"+dataRow[1].replace("'", "''")+"' AND Collection.id="+dataRow[0]+"";
-                    sqlConnectionBridge.update(SQL);
-                    refreshStats=true;
-                    
-                    /*
-                    ActionListener al= new java.awt.event.ActionListener() {
-                        public void actionPerformed(java.awt.event.ActionEvent evt) {
-                            int selectedRow = crewCollectionTable.getSelectedRow();
-                            refreshMenuItemActionPerformed(evt);
-                            crewCollectionTable.setRowSelectionInterval(selectedRow, selectedRow);
-                            refreshStats=true;
-                        }
-                    };
-                    Timer timer = new Timer(0,al);
-                    timer.setRepeats(false);
-                    timer.start();
-                    */
-                }
+                String SQL="UPDATE STTCollectionManager.Collection SET starsFused='"+dataRow[4]+"', level='"+dataRow[5]+"', fullyEquipped='"+dataRow[6]+"', inVault='"+dataRow[7]+"', cmd='"+dataRow[8]+"', dip='"+dataRow[9]+"', eng='"+dataRow[10]+"', med='"+dataRow[11]+"', sci='"+dataRow[12]+"', sec='"+dataRow[13]+"', quantity='"+dataRow[16]+"' WHERE "
+                +"Collection.crewName='"+dataRow[1].replace("'", "''")+"' AND Collection.id="+dataRow[0]+"";
+                sqlConnectionBridge.update(SQL);
+                refreshStats=true;
+
+                /*
+                ActionListener al= new java.awt.event.ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        int selectedRow = crewCollectionTable.getSelectedRow();
+                        refreshMenuItemActionPerformed(evt);
+                        crewCollectionTable.setRowSelectionInterval(selectedRow, selectedRow);
+                        refreshStats=true;
+                    }
+                };
+                Timer timer = new Timer(0,al);
+                timer.setRepeats(false);
+                timer.start();
+                */
             }
         }
     }
@@ -1386,10 +1734,12 @@ public class STTCollectionManager extends javax.swing.JFrame {
         SQLConnectionBridge sqlConnectionBridge = new SQLConnectionBridge(jdbcUrl,user,password,sttCollectionManager);
         String SQL = "CREATE TABLE STTCollectionManager.Settings(\n" +
         "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),\n" +
-        "setting VARCHAR(20),\n" +
-        "value VARCHAR(20),\n" +
+        "setting VARCHAR(30),\n" +
+        "value VARCHAR(200),\n" +
         "PRIMARY KEY (setting)\n" +
         ")";
+        sqlConnectionBridge.update(SQL);
+        SQL="INSERT INTO STTCollectionManager.Settings(setting, value) VALUES ('firstRun', 'true')";
         sqlConnectionBridge.update(SQL);
         SQL="INSERT INTO STTCollectionManager.Settings(setting, value) VALUES ('disclaimerAccepted', 'false')";
         sqlConnectionBridge.update(SQL);
@@ -1414,6 +1764,12 @@ public class STTCollectionManager extends javax.swing.JFrame {
         SQL="INSERT INTO STTCollectionManager.Settings(setting, value) VALUES ('font', 'SansSerif')";
         sqlConnectionBridge.update(SQL);
         SQL="INSERT INTO STTCollectionManager.Settings(setting, value) VALUES ('crewSlots', '0')";
+        sqlConnectionBridge.update(SQL);
+        SQL="INSERT INTO STTCollectionManager.Settings(setting, value) VALUES ('wikiCrewURL', 'https://stt.wiki/wiki/Crew?action=raw')";
+        sqlConnectionBridge.update(SQL);
+        SQL="INSERT INTO STTCollectionManager.Settings(setting, value) VALUES ('wikiCrewPagesBaseURL', 'https://stt.wiki/wiki/')";
+        sqlConnectionBridge.update(SQL);
+        SQL="INSERT INTO STTCollectionManager.Settings(setting, value) VALUES ('wikiCrewTraitsBaseURL', 'https://stt.wiki/wiki/Category:')";
         sqlConnectionBridge.update(SQL);
     }
 
@@ -1477,73 +1833,262 @@ public class STTCollectionManager extends javax.swing.JFrame {
         "PRIMARY KEY (id)\n" +
         ")";
         sqlConnectionBridge.update(SQL);
-               
-        WikiParser crewParser = new WikiParser();
-        LinkedList<CrewMember> crewList=crewParser.getCrewMembers();
-
-        for (int i=0; i < crewList.size(); i++) {
-            CrewMember crewMember = crewList.get(i);
-            String crewName = crewMember.getCrewName().replace("'", "''");
-            String charName = crewMember.getCharName().replace("'", "''");
-            String stars = crewMember.getStars();
-            if(stars.length()>2) stars="0";
-            String cmd = crewMember.getCmd();
-            String dip = crewMember.getDip();
-            String eng = crewMember.getEng();
-            String med = crewMember.getMed();
-            String sci = crewMember.getSci();
-            String sec = crewMember.getSec();
-            String race = crewMember.getRace().replace("'", "''");
-            String[] traits = crewMember.getTraits();
-            String mergedTraits = "";
-
-            int traitsLength=0;
-            for (int p=0; p < traits.length; p++) {
-                if (traits[p] != null)
-                traitsLength++;
-            }
-
-            if (traits != null) {
-                for (int p=0; p < traitsLength; p++) {
-                    mergedTraits = mergedTraits.concat(traits[p]).replace("'", "''");
-                    if (p<traitsLength-1)
-                    mergedTraits = mergedTraits.concat(", ");
-                }
-            }
-
-            SQL="INSERT INTO STTCollectionManager.Crew(crewName, charName, stars, cmd, dip, eng, med, sci, sec, race, traits) VALUES ('"+crewName+"', '"+charName+"', '"+stars+"', '"+cmd+"', '"+dip+"', '"+eng+"', '"+med+"', '"+sci+"', '"+sec+"', '"+race+"', '"+mergedTraits+"')";
-            sqlConnectionBridge.update(SQL);
-            
-            logTextArea.append("Crew Name: " + crewMember.getCrewName() + "\n");
-            logTextArea.append("Character Name: " + crewMember.getCharName() + "\n");
-            logTextArea.append("Stars: " + crewMember.getStars() + "\n\n");
-
-            try {
-                if (!crewMember.getCmd().equals("0"))
-                    logTextArea.append("CMD: " + crewMember.getCmd() + "\n");
-                if (!crewMember.getDip().equals("0"))
-                    logTextArea.append("DIP: " + crewMember.getDip() + "\n");
-                if (!crewMember.getEng().equals("0"))
-                    logTextArea.append("ENG: " + crewMember.getEng() + "\n");
-                if (!crewMember.getMed().equals("0"))
-                    logTextArea.append("MED: " + crewMember.getMed() + "\n");
-                if (!crewMember.getSci().equals("0"))
-                    logTextArea.append("SCI: " + crewMember.getSci() + "\n");
-                if (!crewMember.getSec().equals("0"))
-                    logTextArea.append("SEC: " + crewMember.getSec() + "\n");
-                logTextArea.append("\nRace: " + crewMember.getRace() + "\n");
-                logTextArea.append("Traits: "+mergedTraits);
-
-            } catch (Exception Ex) {
-
-            }
-
-            logTextArea.append("\n================================");
-        }
+        
         SQL = "ALTER TABLE STTCollectionManager.Collection ADD CONSTRAINT collection_fk\n" +
         "FOREIGN KEY (crewName) REFERENCES STTCollectionManager.Crew(crewName)";
         sqlConnectionBridge.update(SQL);
         setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+    }
+    
+    
+
+    public void fillCrewDBTableFromWiki() {
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        SQLConnectionBridge sqlConnectionBridge = new SQLConnectionBridge(jdbcUrl,user,password,sttCollectionManager);
+        
+        URL url = null;
+        try {
+            url = new URL(currentWikiCrewURLLabel.getText());
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(STTCollectionManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        WikiParser crewParser = new WikiParser(url);
+        LinkedList<CrewMember> crewList;
+        if (crewParser!=null)
+            crewList=crewParser.getCrewMembers();
+        else
+            return;
+        
+        if (crewList!=null) {
+            Progress progress = new Progress(sttCollectionManager,crewList.size());
+                   
+            String SQL = "";
+            for (int i=0; i < crewList.size(); i++) {
+                CrewMember crewMember = crewList.get(i);
+                String crewName = crewMember.getCrewName().replace("'", "''");
+                String charName = crewMember.getCharName().replace("'", "''");
+                String stars = crewMember.getStars();
+                if(stars.length()>2) stars="0";
+                String cmd = crewMember.getCmd();
+                String dip = crewMember.getDip();
+                String eng = crewMember.getEng();
+                String med = crewMember.getMed();
+                String sci = crewMember.getSci();
+                String sec = crewMember.getSec();
+                String race = crewMember.getRace().replace("'", "''");
+                String[] traits = crewMember.getTraits();
+                String mergedTraits = "";
+
+                int traitsLength=0;
+                for (int p=0; p < traits.length; p++) {
+                    if (traits[p] != null)
+                    traitsLength++;
+                }
+
+                if (traits != null) {
+                    for (int p=0; p < traitsLength; p++) {
+                        mergedTraits = mergedTraits.concat(traits[p]).replace("'", "''");
+                        if (p<traitsLength-1)
+                        mergedTraits = mergedTraits.concat(", ");
+                    }
+                }
+
+                SQL="INSERT INTO STTCollectionManager.Crew(crewName, charName, stars, cmd, dip, eng, med, sci, sec, race, traits) VALUES ('"+crewName+"', '"+charName+"', '"+stars+"', '"+cmd+"', '"+dip+"', '"+eng+"', '"+med+"', '"+sci+"', '"+sec+"', '"+race+"', '"+mergedTraits+"')";
+                sqlConnectionBridge.update(SQL);
+
+                String text;
+                text="Crew Name: " + crewMember.getCrewName() + "\n";
+                text+="Character Name: " + crewMember.getCharName() + "\n";
+                text+="Stars: " + crewMember.getStars() + "\n\n";
+
+                try {
+                    if (!crewMember.getCmd().equals("0"))
+                        text+="CMD: " + crewMember.getCmd() + "\n";
+                    if (!crewMember.getDip().equals("0"))
+                        text+="DIP: " + crewMember.getDip() + "\n";
+                    if (!crewMember.getEng().equals("0"))
+                        text+="ENG: " + crewMember.getEng() + "\n";
+                    if (!crewMember.getMed().equals("0"))
+                        text+="MED: " + crewMember.getMed() + "\n";
+                    if (!crewMember.getSci().equals("0"))
+                        text+="SCI: " + crewMember.getSci() + "\n";
+                    if (!crewMember.getSec().equals("0"))
+                        text+="SEC: " + crewMember.getSec() + "\n";
+                    text+="\nRace: " + crewMember.getRace() + "\n";
+                    text+="Traits: "+mergedTraits;
+
+                } catch (Exception Ex) {
+
+                }
+
+                text+="\n================================\n";
+                logTextArea.append(text);
+                progress.showProgress(i, text);
+            }
+            JOptionPane.showMessageDialog(this, "Crew data successfully imported!", "Import from Wiki", JOptionPane.INFORMATION_MESSAGE);
+            setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        } else {
+            JOptionPane.showMessageDialog(this, "Couldn't fetch crew data. Please check your Internet connection and/or URL settings and try again.", "Import from Wiki", JOptionPane.ERROR_MESSAGE);
+            setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            return;
+        }
+    }
+    
+    public void fillCrewDBTableFromFile() {
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        SQLConnectionBridge sqlConnectionBridge = new SQLConnectionBridge(jdbcUrl,user,password,sttCollectionManager);
+        
+        FileParser crewParser = new FileParser();
+        LinkedList<CrewMember> crewList=crewParser.importCrewMembers("Crew");
+        if (crewList!=null) {
+            Progress progress = new Progress(sttCollectionManager, crewList.size());
+            
+            String SQL = "";
+            for (int i=0; i < crewList.size(); i++) {
+                CrewMember crewMember = crewList.get(i);
+                String crewName = crewMember.getCrewName().replace("'", "''");
+                String charName = crewMember.getCharName().replace("'", "''");
+                String stars = crewMember.getStars();
+                if(stars.length()>2) stars="0";
+                String cmd = crewMember.getCmd();
+                String dip = crewMember.getDip();
+                String eng = crewMember.getEng();
+                String med = crewMember.getMed();
+                String sci = crewMember.getSci();
+                String sec = crewMember.getSec();
+                String race = crewMember.getRace().replace("'", "''");
+                String[] traits = crewMember.getTraits();
+                String mergedTraits = "";
+
+                int traitsLength=0;
+                for (int p=0; p < traits.length; p++) {
+                    if (traits[p] != null)
+                    traitsLength++;
+                }
+
+                if (traits != null) {
+                    for (int p=0; p < traitsLength; p++) {
+                        mergedTraits = mergedTraits.concat(traits[p]).replace("'", "''");
+                        if (p<traitsLength-1)
+                        mergedTraits = mergedTraits.concat(", ");
+                    }
+                }
+
+                SQL="INSERT INTO STTCollectionManager.Crew(crewName, charName, stars, cmd, dip, eng, med, sci, sec, race, traits) VALUES ('"+crewName+"', '"+charName+"', '"+stars+"', '"+cmd+"', '"+dip+"', '"+eng+"', '"+med+"', '"+sci+"', '"+sec+"', '"+race+"', '"+mergedTraits+"')";
+                sqlConnectionBridge.update(SQL);
+                
+                String text;
+                text="Crew Name: " + crewMember.getCrewName() + "\n";
+                text+="Character Name: " + crewMember.getCharName() + "\n";
+                text+="Stars: " + crewMember.getStars() + "\n\n";
+
+                try {
+                    if (!crewMember.getCmd().equals("0"))
+                        text+="CMD: " + crewMember.getCmd() + "\n";
+                    if (!crewMember.getDip().equals("0"))
+                        text+="DIP: " + crewMember.getDip() + "\n";
+                    if (!crewMember.getEng().equals("0"))
+                        text+="ENG: " + crewMember.getEng() + "\n";
+                    if (!crewMember.getMed().equals("0"))
+                        text+="MED: " + crewMember.getMed() + "\n";
+                    if (!crewMember.getSci().equals("0"))
+                        text+="SCI: " + crewMember.getSci() + "\n";
+                    if (!crewMember.getSec().equals("0"))
+                        text+="SEC: " + crewMember.getSec() + "\n";
+                    text+="\nRace: " + crewMember.getRace() + "\n";
+                    text+="Traits: "+mergedTraits;
+
+                } catch (Exception Ex) {
+
+                }
+
+                text+="\n================================\n";
+                logTextArea.append(text);
+                progress.showProgress(i, text);
+            }
+        SQL = "ALTER TABLE STTCollectionManager.Collection ADD CONSTRAINT collection_fk\n" +
+        "FOREIGN KEY (crewName) REFERENCES STTCollectionManager.Crew(crewName)";
+        sqlConnectionBridge.update(SQL);
+        } else {
+            JOptionPane.showMessageDialog(this, "Couldn't find crew data in the selected file. Please check your file and/or syntax and try again.", "Importing from file error", JOptionPane.ERROR_MESSAGE);
+            setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            return;
+        }
+        JOptionPane.showMessageDialog(this, "Crew data successfully imported!", "Import from file", JOptionPane.INFORMATION_MESSAGE);
+        setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+    }
+    
+    public void fillCollectionDBTableFromFile() {
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        SQLConnectionBridge sqlConnectionBridge = new SQLConnectionBridge(jdbcUrl,user,password,sttCollectionManager);
+        
+        FileParser crewParser = new FileParser();
+        LinkedList<CrewMember> crewList=crewParser.importCrewMembers("Collection");
+        if (crewList!=null) {
+            Progress progress = new Progress(sttCollectionManager, crewList.size());
+            
+            String SQL = "";
+            for (int i=0; i < crewList.size(); i++) {
+                //starsFused, level, fullyEquipped, inVault, cmd, dip, eng, med, sci, sec, quantity, incollection
+                CrewMember crewMember = crewList.get(i);
+                String crewName = crewMember.getCrewName().replace("'", "''");
+                String starsFused = crewMember.getStarsFused();
+                if(starsFused.length()>2) starsFused="0";
+                   
+                String level = crewMember.getLevel();
+                String quantity = crewMember.getQuantity();
+                Boolean fullyEquiped = crewMember.isFullyEquiped();
+                Boolean inVault = crewMember.isInVault();
+                String cmd = crewMember.getCmd();
+                String dip = crewMember.getDip();
+                String eng = crewMember.getEng();
+                String med = crewMember.getMed();
+                String sci = crewMember.getSci();
+                String sec = crewMember.getSec();
+                
+                SQL="INSERT INTO STTCollectionManager.Collection(crewName, starsFused, level, fullyEquipped, inVault, cmd, dip, eng, med, sci, sec, quantity, incollection) VALUES ('"+crewName+"', '"+starsFused+"', '"+level+"', '"+fullyEquiped+"', '"+inVault+"', '"+cmd+"', '"+dip+"', '"+eng+"', '"+med+"', '"+sci+"', '"+sec+"', '"+quantity+"', 'true')";
+                sqlConnectionBridge.update(SQL);
+
+                String text;
+                text="Crew Name: " + crewMember.getCrewName() + "\n";
+                text+="Stars Fused: " + crewMember.getStarsFused() + "\n";
+                text+="Level: " + crewMember.getLevel() + "\n";
+                text+="Fully Equiped: " + crewMember.isFullyEquiped() + "\n";
+                text+="In Vault: " + crewMember.isInVault() + "\n\n";
+
+                try {
+                    if (!crewMember.getCmd().equals("0"))
+                        text+="CMD: " + crewMember.getCmd() + "\n";
+                    if (!crewMember.getDip().equals("0"))
+                        text+="DIP: " + crewMember.getDip() + "\n";
+                    if (!crewMember.getEng().equals("0"))
+                        text+="ENG: " + crewMember.getEng() + "\n";
+                    if (!crewMember.getMed().equals("0"))
+                        text+="MED: " + crewMember.getMed() + "\n";
+                    if (!crewMember.getSci().equals("0"))
+                        text+="SCI: " + crewMember.getSci() + "\n";
+                    if (!crewMember.getSec().equals("0"))
+                        text+="SEC: " + crewMember.getSec() + "\n\n";
+                    text+="Quantity: " + crewMember.getQuantity() + "\n";
+                } catch (Exception Ex) {
+
+                }
+
+                text+="\n================================\n";
+                logTextArea.append(text);
+                progress.showProgress(i, text);
+            }
+            
+        } else {
+            JOptionPane.showMessageDialog(this, "Couldn't find Crew data in the selected file. Please check your file and/or syntax and try again.", "Import from file", JOptionPane.ERROR_MESSAGE);
+            setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            return;
+        }
+        
+        JOptionPane.showMessageDialog(this, "Crew data successfully imported!", "Import from file", JOptionPane.INFORMATION_MESSAGE);
+        setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        dataChangedRefreshComponents();
     }
     
     class IntComparator implements Comparator {
@@ -1643,8 +2188,28 @@ public class STTCollectionManager extends javax.swing.JFrame {
                 crewTable.setModel(sqlConnectionBridge.query(SQL, columnNames));
                 
                 if(crewTable.getModel().getRowCount()==0 && dialog==null) {
-                    JOptionPane.showMessageDialog(this, "No crew data found. Crew data will be fetched and afterwards the application window will be shown, it may take a few seconds!");
+                    //JOptionPane.showMessageDialog(this, "No crew data found. Crew data will be fetched and afterwards the application window will be shown, it may take a few seconds!");
+                    //Object[] options = {"Yes", "No"};
+                    //int choice = JOptionPane.showOptionDialog(this, null, "No crew data found. Crew data will be fetched and afterwards the application window will be shown, it may take a few seconds!\npressing one of the following buttons.\nContinue?", JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_OPTION, null, options, options[1]);
                     buildDB();
+                    String message = "No crew data found.\nCrew data will be fetched and afterwards the application window will be shown, it may take a few seconds!\n\nContinue? (Press \"No\" to import Crew data from a local .xls file instead).";
+                    String title = "Download crew data";
+                    int reply = JOptionPane.showConfirmDialog(this, message, title, JOptionPane.YES_NO_OPTION);
+                    if (reply == JOptionPane.YES_OPTION) {
+                        fillCrewDBTableFromWiki();
+                    }
+                    else {
+                        message = "Crew data not downloaded.\nImport Crew data from a local .xls file?  (Press \"No\" to continue without importing).";
+                        title = "Import crew data";
+                        reply = JOptionPane.showConfirmDialog(this, message, title, JOptionPane.YES_NO_OPTION);
+                        if (reply == JOptionPane.YES_OPTION) {
+                            fillCrewDBTableFromFile();
+                        } else {
+                            //WindowEvent windowClosing = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
+                            //this.dispatchEvent(windowClosing);
+                            return;
+                        }
+                    }
                     fillCrewTable("no search", null);
                     /*
                     Exception e = new Exception("No Database");
@@ -1677,18 +2242,37 @@ public class STTCollectionManager extends javax.swing.JFrame {
             updateRowHeights(crewTable);
             resizeColumnWidth(crewTable);
             
-            crewTable.getModel().addTableModelListener(new tableDataListener());
+            //crewTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+            crewTable.getModel().addTableModelListener(new crewTableDataListener());
+            
+            //TableCellListener tcl = new TableCellListener(crewTable, action);
             
         } catch (Exception e) {     
-            JOptionPane.showMessageDialog(this, "crewTable Exception: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "crewTable Exception: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             //return e;
         }
         /*
         Exception e = new Exception("Ok");
         return e;
         */
-   }
+    }
+    
+    
 
+    public class SelectAllCellEditor extends DefaultCellEditor
+    {
+        public SelectAllCellEditor(final JTextField textField ) {
+            super( textField );
+            textField.addFocusListener( new FocusAdapter()
+            {
+                public void focusGained( final FocusEvent e )
+                {
+                    textField.selectAll();
+                }
+            } );
+        }
+    }
+    
     public Exception fillCrewCollectionTable(String search, DefaultTableModel searchModel) {
         DefaultTableModel model = new DefaultTableModel(){
             Class[] types = new Class [] {
@@ -1804,7 +2388,7 @@ public class STTCollectionManager extends javax.swing.JFrame {
                 resizeColumnWidth(crewCollectionTable);
                 
             }catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "crewCollectionTable RowSorter Exception: " + e.getMessage());
+                JOptionPane.showMessageDialog(this, "crewCollectionTable RowSorter Exception: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return e;
             }
             
@@ -1812,7 +2396,7 @@ public class STTCollectionManager extends javax.swing.JFrame {
                 final DefaultCellEditor defaultEditor = (DefaultCellEditor) crewCollectionTable.getDefaultEditor(crewCollectionTable.getColumnClass(i));
                 defaultEditor.setClickCountToStart(1);
             }
-
+            
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
@@ -1820,28 +2404,28 @@ public class STTCollectionManager extends javax.swing.JFrame {
                 }
             });
             
-            crewCollectionTable.getModel().addTableModelListener(new tableDataListener());
-
             crewCollectionTable.addKeyListener(new KeyAdapter() {
-                public void keyReleased(KeyEvent e) {
+                public void keyPressed(KeyEvent e) {
                     if(e.getKeyCode() == KeyEvent.VK_TAB) {
                         int column = crewCollectionTable.getSelectedColumn();
                         int row = crewCollectionTable.getSelectedRow();
-                        while(crewCollectionTable.isCellEditable(row,column) == false) {
-                          if(row<0)
-                              row = 0;
-                          
-                          if(column<0)
-                              column = 0;
-                          else
-                              column++;
-                          
-                          if(column == crewCollectionTable.getColumnCount()) {
+                        
+                        if(column<0)
                             column = 0;
-                            row++;
-                            if(row == crewCollectionTable.getRowCount())
+
+                        if(row<0)
+                            row = 0;
+
+                        while(crewCollectionTable.isCellEditable(row,column) == false) {
+                            column++;
+                        }
+
+                        if(column == crewCollectionTable.getColumnCount()-2) {
+                            column = 0;
+                            if(row == crewCollectionTable.getRowCount()-1)
                                 row = 0;
-                          }
+                            else
+                                row++; 
                         }
 
                         crewCollectionTable.editCellAt(row, column);
@@ -1849,9 +2433,11 @@ public class STTCollectionManager extends javax.swing.JFrame {
                     }
                 }
             });
-
+            
+            crewCollectionTable.getModel().addTableModelListener(new crewCollectionTableDataListener());
+            
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "crewCollectionTable Exception: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "crewCollectionTable Exception: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return e;
         }
         Exception e = new Exception("Ok");
@@ -1970,9 +2556,9 @@ public class STTCollectionManager extends javax.swing.JFrame {
                         id = Integer.toString(Integer.parseInt(maxIdModel.getValueAt(0,0).toString())+1);
                         if(Integer.parseInt(id)>0)
                             SQL = "ALTER TABLE Collection ALTER COLUMN id RESTART WITH "+id;
-                        else
-                            SQL = "ALTER TABLE Collection ALTER COLUMN id RESTART WITH "+1;
                     }
+                    else
+                        SQL = "ALTER TABLE Collection ALTER COLUMN id RESTART WITH "+1;
                     sqlConnectionBridge.update(SQL);
                     SQL="INSERT INTO STTCollectionManager.Collection(crewName, starsFused, level, fullyEquipped, inVault, cmd, dip, eng, med, sci, sec, quantity, incollection) VALUES ('"+dataRow[1].replace("'", "''")+"', '1', '1', 'false', 'false', '"+dataRow[8]+"', '"+dataRow[9]+"', '"+dataRow[10]+"', '"+dataRow[11]+"', '"+dataRow[12]+"', '"+dataRow[13]+"', '"+dataRow[16]+"', 'true')";
                     sqlConnectionBridge.update(SQL);
@@ -2368,7 +2954,7 @@ public class STTCollectionManager extends javax.swing.JFrame {
                     URL url = null;
 
                     try {
-                        url = new URL("http://startrektimelineswiki.com/wiki/"+table.getValueAt(row, col).toString().replace(" ", "_").replace("\"", "%22"));
+                        url = new URL(currentWikiCrewPagesBaseURLLabel.getText()+table.getValueAt(row, col).toString().replace(" ", "_").replace("\"", "%22"));
                     } catch (MalformedURLException ex) {
                         Logger.getLogger(STTCollectionManager.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -2380,7 +2966,7 @@ public class STTCollectionManager extends javax.swing.JFrame {
                     URL url = null;
 
                     try {
-                        url = new URL("http://startrektimelineswiki.com/wiki/"+table.getValueAt(row, col).toString().replace(" ", "_").replace("\"", "%22"));
+                        url = new URL(currentWikiCrewTraitsBaseURLLabel.getText()+table.getValueAt(row, col).toString().replace(" ", "_").replace("\"", "%22"));
                     } catch (MalformedURLException ex) {
                         Logger.getLogger(STTCollectionManager.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -2390,7 +2976,7 @@ public class STTCollectionManager extends javax.swing.JFrame {
                     URL url = null;
 
                     try {
-                        url = new URL("http://startrektimelineswiki.com/wiki/"+table.getValueAt(row, col).toString().replace(" ", "_").replace("\"", "%22"));
+                        url = new URL(currentWikiCrewTraitsBaseURLLabel.getText()+table.getValueAt(row, col).toString().replace(" ", "_").replace("\"", "%22"));
                     } catch (MalformedURLException ex) {
                         Logger.getLogger(STTCollectionManager.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -2406,7 +2992,7 @@ public class STTCollectionManager extends javax.swing.JFrame {
                     URL url = null;
 
                     try {
-                        url = new URL("http://startrektimelineswiki.com/wiki/"+trait.replace(" ", "_").replace("\"", "%22"));
+                        url = new URL(currentWikiCrewTraitsBaseURLLabel.getText()+trait.replace(" ", "_").replace("\"", "%22"));
                     } catch (MalformedURLException ex) {
                         Logger.getLogger(STTCollectionManager.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -2420,7 +3006,7 @@ public class STTCollectionManager extends javax.swing.JFrame {
                     URL url = null;
 
                     try {
-                        url = new URL("http://startrektimelineswiki.com/wiki/"+trait.replace(" ", "_").replace("\"", "%22"));
+                        url = new URL(currentWikiCrewTraitsBaseURLLabel.getText()+trait.replace(" ", "_").replace("\"", "%22"));
                     } catch (MalformedURLException ex) {
                         Logger.getLogger(STTCollectionManager.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -2558,31 +3144,46 @@ public class STTCollectionManager extends javax.swing.JFrame {
         crewCollectionTable.setFont(new Font(fontName, Font.PLAIN, jTableFontSize));
         crewTable.getTableHeader().setFont(new Font(fontName, Font.PLAIN, jTableFontSize));
         crewCollectionTable.getTableHeader().setFont(new Font(fontName, Font.PLAIN, jTableFontSize));
+        
+        SQL = "SELECT Settings.value FROM STTCollectionManager.Settings WHERE Settings.setting='wikiCrewURL'";
+        DefaultTableModel wikiCrewURLSettingModel = sqlConnectionBridge.query(SQL,"wikiCrewURL");
+        currentWikiCrewURLLabel.setText((String)wikiCrewURLSettingModel.getValueAt(0, 0));
+        wikiCrewURLTextField.setText((String)wikiCrewURLSettingModel.getValueAt(0, 0));      
+        SQL = "SELECT Settings.value FROM STTCollectionManager.Settings WHERE Settings.setting='wikiCrewPagesBaseURL'";
+        DefaultTableModel wikiCrewPagesBaseURLSettingModel = sqlConnectionBridge.query(SQL,"wikiCrewPagesBaseURL");
+        currentWikiCrewPagesBaseURLLabel.setText((String)(wikiCrewPagesBaseURLSettingModel.getValueAt(0, 0)));
+        wikiCrewPagesBaseURLTextField.setText((String)(wikiCrewPagesBaseURLSettingModel.getValueAt(0, 0)));
+        SQL = "SELECT Settings.value FROM STTCollectionManager.Settings WHERE Settings.setting='wikiCrewTraitsBaseURL'";
+        DefaultTableModel wikiCrewTraitsBaseURLSettingModel = sqlConnectionBridge.query(SQL,"wikiCrewTraitsBaseURL");
+        currentWikiCrewTraitsBaseURLLabel.setText((String)(wikiCrewTraitsBaseURLSettingModel.getValueAt(0, 0)));
+        wikiCrewTraitsBaseURLTextField.setText((String)(wikiCrewTraitsBaseURLSettingModel.getValueAt(0, 0)));
     }
     
     public void saveSettings(SQLConnectionBridge sqlConnectionBridge) {
-                int maximized=sttCollectionManager.getExtendedState();
                 String SQL;
-                
-                if(maximized<=0) {
-                    SQL="UPDATE STTCollectionManager.Settings SET value='"+sttCollectionManager.getSize().getHeight()+"' WHERE Settings.setting='windowHeight'";
+                if (this.isVisible()) {
+                    int maximized=sttCollectionManager.getExtendedState();
+
+                    if(maximized<=0) {
+                        SQL="UPDATE STTCollectionManager.Settings SET value='"+sttCollectionManager.getSize().getHeight()+"' WHERE Settings.setting='windowHeight'";
+                        sqlConnectionBridge.update(SQL);
+                        SQL="UPDATE STTCollectionManager.Settings SET value='"+sttCollectionManager.getSize().getWidth()+"' WHERE Settings.setting='windowWidth'";
+                        sqlConnectionBridge.update(SQL);
+                    }
+
+                    if(maximized>0) {
+                        SQL="UPDATE STTCollectionManager.Settings SET value='true' WHERE Settings.setting='windowMaximized'";
+                        sqlConnectionBridge.update(SQL);
+                    } else {
+                        SQL="UPDATE STTCollectionManager.Settings SET value='false' WHERE Settings.setting='windowMaximized'";
+                        sqlConnectionBridge.update(SQL);
+                    }
+                    SQL="UPDATE STTCollectionManager.Settings SET value='"+sttCollectionManager.getLocationOnScreen().getX()+"' WHERE Settings.setting='windowPositionX'";
                     sqlConnectionBridge.update(SQL);
-                    SQL="UPDATE STTCollectionManager.Settings SET value='"+sttCollectionManager.getSize().getWidth()+"' WHERE Settings.setting='windowWidth'";
+
+                    SQL="UPDATE STTCollectionManager.Settings SET value='"+sttCollectionManager.getLocationOnScreen().getY()+"' WHERE Settings.setting='windowPositionY'";
                     sqlConnectionBridge.update(SQL);
                 }
-
-                if(maximized>0) {
-                    SQL="UPDATE STTCollectionManager.Settings SET value='true' WHERE Settings.setting='windowMaximized'";
-                    sqlConnectionBridge.update(SQL);
-                } else {
-                    SQL="UPDATE STTCollectionManager.Settings SET value='false' WHERE Settings.setting='windowMaximized'";
-                    sqlConnectionBridge.update(SQL);
-                }
-                SQL="UPDATE STTCollectionManager.Settings SET value='"+sttCollectionManager.getLocationOnScreen().getX()+"' WHERE Settings.setting='windowPositionX'";
-                sqlConnectionBridge.update(SQL);
-
-                SQL="UPDATE STTCollectionManager.Settings SET value='"+sttCollectionManager.getLocationOnScreen().getY()+"' WHERE Settings.setting='windowPositionY'";
-                sqlConnectionBridge.update(SQL);
     }
     
     public void firstRunCheck(SQLConnectionBridge sqlConnectionBridge) {
