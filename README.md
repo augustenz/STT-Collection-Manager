@@ -10,6 +10,23 @@ STT Collection Manager is a desktop Java application, developed to help manage a
 
 <hr>
 
+<h2>Features</h2>
+
+- View all crew that is in the game in table format
+- Add crew to your collection
+- Remove crew from your collection
+- Update the crew that is in game whenever new crew has been added
+- Sort by any column
+- Filter both tables using the Search function
+- Export the all crew table or the collection table to a HTML, Text or Spreadsheet file
+- Import crew data for the all crew table or the collection table from a Spreadsheet file
+- Update the stats (number of times fused, current level, skills, fully equipped, in vault) of the crew in the collection
+- Press on any Character's Name, Race or Trait and open the corresponding Wiki page
+- Change the font of the tables and the skin of the app
+- View charts and stats about the crew.
+
+<hr>
+
 <h2>Changelog</h2>
 
 <b>
