@@ -57,8 +57,9 @@ Date: 16/10/2017
 
 STT Collection Manager is a Java application, developed to help manage a Crew collection for Disruptor Beam's Star Trek Timelines game.
 
-=====================================================================
-Important Info
+<hr>
+
+<b>Important Info</b>
 
 This application needs the latest JRE (Java Runtime Environment) to run, it is available for various systems and can be obtained
 from www.oracle.com (or https://java.com/en/download/).
@@ -82,10 +83,11 @@ java -jar "STTCollectionManager.jar"
 The Shortcut icons folder contains icon images of various sizes if you wish to make a shortcut
 for the application.
 
-=====================================================================
+<hr>
+
 STT Collection Manager consists of six tabs:
 
-1) The Collection tab
+<b>1) The Collection tab</b>
 
 This tab contains the Crew Collection table. Here all crew that is currently in the collection can be edited. The editable fields are all the skill fields,
 the fused stars field, the level field, the quantity field (in case of multiples) and a checkbox that removes crew from the collection.
@@ -96,7 +98,7 @@ Clicking on a column header will sort the table according to that column.
 Clicking on the Crew Name field, Race field or any of the Traits in the traits field will open the corresponding wiki page.
 Right-clicking on crew members brings up a menu that allows to make a copy of the selected crew member (multiples but with different stats).
 
-2) The Crew tab
+<b>2) The Crew tab</b>
 
 This tab contains the Crew table. Here all crew in the game is listed, no fields are editable here except a checkbox that allows adding crew to the
 collection.
@@ -104,11 +106,11 @@ If this checkbox is already checked, additional clicks on the checkbox will crea
 Clicking on a column header will sort the table according to that column.
 Clicking on the Crew Name field, Race field or any of the Traits in the traits field will open the corresponding wiki page.
 
-3) The Log tab
+<b>3) The Log tab</b>
 
 This tab contains a textarea where messages regarding the execution of commands can be seen.
 
-4) The Charts tab
+<b>4) The Charts tab</b>
 
 This tab contains four charts:
 
@@ -126,21 +128,22 @@ in the collection of a certain rarity.
 Every chart will show the number that each graphic element represents as a mouse tooltip.
 If a chart is clicked it is opened in a new window where it is enlarged and can be maximized.
 
-5) The Stats tab
+<b>5) The Stats tab</b>
 
 This tab has a text field where the number of crew slots can be entered. It has some information about the collection, such as the number of crew/crew
 slots, the number of crew in the collection per rarity/the number of crew in the game per rarity and the average crew level.
 
-6) The Settings tab
+<b>6) The Settings tab</b>
 
 This tab has three text fields where the URLs used in the app can be changed.
 
-=====================================================================
-The Menu Bar
+<hr>
+
+<b>The Menu Bar</b>
 
 The menu bar consists of seven menus: File, Search, Import, Export, Skin, Font and Help.
 
-1) File
+<b>1) File</b>
 
  - Download Crew: Drops the crew table (the collection is kept intact) and re fetches all the crew data from the wiki. This is useful when new crew is
 added to the wiki.
@@ -149,7 +152,7 @@ added to the wiki.
 
  - Exit: Saves various settings like the window size, window position etc, shuts down the database and closes the application.
 
-2) Search
+<b>2) Search</b>
 
 Using the search function, both tables can be filtered according to certain criteria. Typing in any text field will immediately query the database and
 populate the tables accordingly.
@@ -161,19 +164,19 @@ Single traits of course will be matched regardless of their position in the fiel
 For the search window to open, this menu item has to be pressed when either the Collection tab or the Crew tab are open. It will filter the table that is
 open.
 
-3) Import
+<b>3) Import</b>
 
  - Import All Crew: Imports crew data from an .xls file (tab seperated text file) to the "All Crew" table.
 
  - Import Crew Collection: Imports crew data from an .xls file (tab seperated text file) to the "Crew Collection" table.
 
-4) Export
+<b>4) Export</b>
 
  - Export All Crew: Exports all crew in the game to a HTML (crew in collection is shown in bold), text, or xls (tab seperated text file - good for Spreadsheets) file.
 
  - Export Crew Collection: Exports the crew collection to a HTML, text, or xls (tab seperated text file - good for Spreadsheets) file.
 
-5) Skin
+<b>5) Skin</b>
 
 Lists skins available on the system and allows changing the current skin. This setting is saved.
 
@@ -186,7 +189,7 @@ Lists skins available on the system and allows changing the current skin. This s
 
 These settings are saved.
 
-7) Help
+<b>7) Help</b>
 
  - Help: Probably this readme file :)
  - Info: Info about the system.
