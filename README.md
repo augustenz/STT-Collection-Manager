@@ -230,7 +230,7 @@ Project Webpage: https://github.com/augustenz/STT-Collection-Manager<br>
 
 STT Collection Manager was created with Netbeans IDE 8.1.
 
-Crew data comes from the very awesome Star Trek Timelines Wiki (http://startrektimelineswiki.com) and its awesome users.
+Crew data comes from the very awesome Star Trek Timelines Wiki (https://stt.wiki) and its awesome users.
 
 App icon by Memory Alpha (http://memory-alpha.wikia.com).
 
