@@ -1,4 +1,5 @@
-<b>STT Collection Manager</b> ![Logo](https://github.com/augustenz/STT-Collection-Manager/blob/master/src/sttcollectionmanager/resources/logo48x48.png)
+![Logo](https://github.com/augustenz/STT-Collection-Manager/blob/master/src/sttcollectionmanager/resources/logo48x48.png)
+<h2>STT Collection Manager</h2>
 
 STT Collection Manager is a desktop Java application, developed to help manage a crew collection for Disruptor Beam's Star Trek Timelines game.
 
