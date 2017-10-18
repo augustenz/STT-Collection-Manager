@@ -16,6 +16,7 @@ STT Collection Manager is a desktop Java application, developed to help manage a
 16/10/2017
 Version 1.2
 </b><br>
+<br>
 
 New Features:
   - Added Settings tab (change every URL in the app)
@@ -37,6 +38,7 @@ Bugs/Performance
 11/8/2016
 Version 1.1
 </b><br>
+<br>
 
 - Added: Highlight row under cursor
 - Stacked Bar colors changed
@@ -48,6 +50,7 @@ Version 1.1
 5/8/2016
 Version 1.0 (Initial release)
 </b><br>
+<br>
 
 - Removed table tooltips
 - Fixed crew in collection SQL update (single quote escape)
