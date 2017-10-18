@@ -12,8 +12,10 @@ STT Collection Manager is a desktop Java application, developed to help manage a
 
 <h2>Changelog</h2>
 
+<b>
 16/10/2017
 Version 1.2
+</b><br>
 
 New Features:
   - Added Settings tab (change every URL in the app)
@@ -31,8 +33,10 @@ Bugs/Performance
   - Workaround for a bug which would add the first member in the Collection twice (first run only)
   - Various other performance optimizations and bug fixes
 
+<b>
 11/8/2016
 Version 1.1
+</b><br>
 
 - Added: Highlight row under cursor
 - Stacked Bar colors changed
@@ -40,8 +44,10 @@ Version 1.1
 - Tab to next editable cell
 - Crew in collection update fixes - improved performance
 
+<b>
 5/8/2016
 Version 1.0 (Initial release)
+</b><br>
 
 - Removed table tooltips
 - Fixed crew in collection SQL update (single quote escape)
@@ -50,10 +56,10 @@ Version 1.0 (Initial release)
 
 <h2>Help</h2>
 
-STT Collection Manager v1.2
-Author: August Enzelberger
-Project Homepage: https://github.com/augustenz/STT-Collection-Manager
-Date: 16/10/2017
+STT Collection Manager v1.2<br>
+Author: August Enzelberger<br>
+Project Homepage: https://github.com/augustenz/STT-Collection-Manager<br>
+Date: 16/10/2017<br>
 
 STT Collection Manager is a Java application, developed to help manage a Crew collection for Disruptor Beam's Star Trek Timelines game.
 
@@ -199,8 +205,8 @@ These settings are saved.
 
 <h2>Credits</h2>
 
-Author: August Enzelberger
-Project Webpage: https://github.com/augustenz/STT-Collection-Manager
+Author: August Enzelberger<br>
+Project Webpage: https://github.com/augustenz/STT-Collection-Manager<br>
 
 STT Collection Manager was created with Netbeans IDE 8.1.
 
