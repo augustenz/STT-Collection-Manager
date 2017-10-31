@@ -320,7 +320,7 @@ public class STTCollectionManager extends javax.swing.JFrame {
         );
         collectionPanelLayout.setVerticalGroup(
             collectionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(collectionScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
+            .addComponent(collectionScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
         );
 
         mainTabbedPane.addTab("Collection ", new javax.swing.ImageIcon(getClass().getResource("/sttcollectionmanager/resources/table.png")), collectionPanel); // NOI18N
@@ -347,7 +347,7 @@ public class STTCollectionManager extends javax.swing.JFrame {
         );
         crewPanelLayout.setVerticalGroup(
             crewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(crewScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
+            .addComponent(crewScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
         );
 
         mainTabbedPane.addTab("Crew ", new javax.swing.ImageIcon(getClass().getResource("/sttcollectionmanager/resources/table.png")), crewPanel); // NOI18N
@@ -364,7 +364,7 @@ public class STTCollectionManager extends javax.swing.JFrame {
         );
         logPanelLayout.setVerticalGroup(
             logPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(logScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
+            .addComponent(logScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
         );
 
         mainTabbedPane.addTab("Log ", new javax.swing.ImageIcon(getClass().getResource("/sttcollectionmanager/resources/log3.png")), logPanel); // NOI18N
@@ -561,7 +561,7 @@ public class STTCollectionManager extends javax.swing.JFrame {
         );
         statsPanelLayout.setVerticalGroup(
             statsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(statsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
+            .addComponent(statsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
         );
 
         mainTabbedPane.addTab("Stats ", new javax.swing.ImageIcon(getClass().getResource("/sttcollectionmanager/resources/stats2.png")), statsPanel); // NOI18N
@@ -884,10 +884,9 @@ public class STTCollectionManager extends javax.swing.JFrame {
 
         mainMenuBar.add(helpMenu);
 
-        beerMenu.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 102, 102), 2, true));
-        beerMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sttcollectionmanager/resources/beer16x16.png"))); // NOI18N
-        beerMenu.setText(" Beer! :) ");
-        beerMenu.setToolTipText("If you like this Software feel free to buy me a beer!");
+        beerMenu.setBorder(null);
+        beerMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sttcollectionmanager/resources/donate93x16b.png"))); // NOI18N
+        beerMenu.setToolTipText("If you like this Software feel free to buy me a beer! :)");
         beerMenu.setBorderPainted(true);
         beerMenu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         beerMenu.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1258,8 +1257,8 @@ public class STTCollectionManager extends javax.swing.JFrame {
     }//GEN-LAST:event_importCollectionMenuItemActionPerformed
 
     private void defaultsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defaultsButtonActionPerformed
-        currentWikiCrewURLLabel.setText("https://stt.wiki/wiki/Crew?action=raw");
-        wikiCrewURLTextField.setText("https://stt.wiki/wiki/Crew?action=raw");      
+        currentWikiCrewURLLabel.setText("https://stt.wiki/wiki/Crew/List?action=raw");
+        wikiCrewURLTextField.setText("https://stt.wiki/wiki/Crew/List?action=raw");      
         currentWikiCrewPagesBaseURLLabel.setText("https://stt.wiki/wiki/");
         wikiCrewPagesBaseURLTextField.setText("https://stt.wiki/wiki/");
         currentWikiCrewTraitsBaseURLLabel.setText("https://stt.wiki/wiki/Category:");
@@ -1765,7 +1764,7 @@ public class STTCollectionManager extends javax.swing.JFrame {
         sqlConnectionBridge.update(SQL);
         SQL="INSERT INTO STTCollectionManager.Settings(setting, value) VALUES ('crewSlots', '0')";
         sqlConnectionBridge.update(SQL);
-        SQL="INSERT INTO STTCollectionManager.Settings(setting, value) VALUES ('wikiCrewURL', 'https://stt.wiki/wiki/Crew?action=raw')";
+        SQL="INSERT INTO STTCollectionManager.Settings(setting, value) VALUES ('wikiCrewURL', 'https://stt.wiki/wiki/Crew/List?action=raw')";
         sqlConnectionBridge.update(SQL);
         SQL="INSERT INTO STTCollectionManager.Settings(setting, value) VALUES ('wikiCrewPagesBaseURL', 'https://stt.wiki/wiki/')";
         sqlConnectionBridge.update(SQL);
