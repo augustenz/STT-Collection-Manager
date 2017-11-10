@@ -4,7 +4,9 @@ STT Collection Manager is a desktop Java application, developed to help manage a
 
 <img src="https://github.com/augustenz/STT-Collection-Manager/blob/master/AllCrew.png" width="15%" height="15%" /><img src="https://github.com/augustenz/STT-Collection-Manager/blob/master/Collection.png" width="15%" height="15%" /><img src="https://github.com/augustenz/STT-Collection-Manager/blob/master/SearchCollection.png" width="15%" height="15%" /><img src="https://github.com/augustenz/STT-Collection-Manager/blob/master/Charts.png" width="15%" height="15%" /><img src="https://github.com/augustenz/STT-Collection-Manager/blob/master/ChartsWindow.png" width="15%" height="15%" /><img src="https://github.com/augustenz/STT-Collection-Manager/blob/master/Settings+Import.png" width="15%" height="15%" />
 
-<b>Download the latest version: </b><a href="https://github.com/augustenz/STT-Collection-Manager/raw/master/STTCollectionManager_v1.2.zip">STTCollectionManager_v1.2.zip</a>
+<h2>Download</h2>
+
+<b>Download the latest version: <a href="https://github.com/augustenz/STT-Collection-Manager/raw/master/STTCollectionManager_v1.2.zip">STTCollectionManager_v1.2.zip</a></b>
 
 To run the application, extract STTCollectionManager_v1.2.zip to a folder and double-click on the STTCollectionManager.jar file, or right click and choose open with and your JRE (java.exe on Windows, OpenJDK or Oracle Java on Linux).
 
