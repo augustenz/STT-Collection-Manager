@@ -8,6 +8,8 @@ STT Collection Manager is a desktop Java application, developed to help manage a
 
 To run the application, extract STTCollectionManager_v1.2.zip to a folder and double-click on the STTCollectionManager.jar file, or right click and choose open with and your JRE (java.exe on Windows, OpenJDK or Oracle Java on Linux).
 
+This application needs the latest JRE (Java Runtime Environment) to run, it is available for various systems and can be obtained from www.oracle.com (or https://java.com/en/download/).
+
 The Shortcut icons folder contains icon images of various sizes if you wish to make a shortcut
 for the application.
 
