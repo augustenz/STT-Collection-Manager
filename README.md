@@ -6,6 +6,11 @@ STT Collection Manager is a desktop Java application, developed to help manage a
 
 <b>Download the latest version: </b><a href="https://github.com/augustenz/STT-Collection-Manager/raw/master/STTCollectionManager_v1.2.zip">STTCollectionManager_v1.2.zip</a>
 
+To run the application, extract STTCollectionManager_v1.2.zip to a folder and double-click on the STTCollectionManager.jar file, or right click and choose open with and your JRE (java.exe on Windows, OpenJDK or Oracle Java on Linux).
+
+The Shortcut icons folder contains icon images of various sizes if you wish to make a shortcut
+for the application.
+
 [![Donate](https://github.com/augustenz/STT-Collection-Manager/blob/master/src/sttcollectionmanager/resources/beer32x32.png)](https://www.paypal.me/augustenz) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/augustenz) <-- <a href="https://www.paypal.me/augustenz">If you like this Software feel free to buy me a beer! :)</a>
 
 <hr>
