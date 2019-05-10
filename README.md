@@ -25,7 +25,7 @@ for the application.
 - View all crew that is in the Wiki in table format
 - Add crew from the all crew table to your collection
 - Remove crew from your collection
-- Update the all crew table with new crew data from the Wiki whenever new crew has been added
+- Update the all crew table by downloading new crew data from the Wiki whenever new crew has been added
 - Sort by any column
 - Filter both tables (All crew table and Crew collection table) using the Search function
 - Export the all crew table or the collection table to a HTML, Text or Spreadsheet file
