@@ -28,7 +28,7 @@ for the application.
 - Update the all crew table by downloading new crew data from the Wiki whenever new crew has been added
 - Sort by any column
 - Filter both tables (All crew table and Crew collection table) using the Search function
-- Export the all crew table or the collection table to a HTML, Text or Spreadsheet file (<a href="https://github.com/augustenz/STT-Collection-Manager/blob/master/STT_All_Crew_table_exported_to_HTML_sample.html">Exported table to HTML sample</a>)
+- Export the all crew table or the collection table to a HTML, Text or Spreadsheet file (<a href="https://github.com/augustenz/STT-Collection-Manager/blob/master/STT_All_Crew_table_exported_to_HTML_sample.png">Exported table to HTML sample</a>)
 - Import crew data for the all crew table or the collection table from a Spreadsheet file
 - Update the stats (number of times fused, current level, skills, fully equipped, in vault) of the crew in the collection
 - Press on any Character's Name, Race or Trait and open the corresponding Wiki page
