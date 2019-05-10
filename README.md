@@ -21,17 +21,18 @@ for the application.
 
 <h2>Features</h2>
 
-- View all crew that is in the game in table format
-- Add crew to your collection
+- Download and import all crew members from the Wiki to the application's local database
+- View all crew that is in the Wiki in table format
+- Add crew from the all crew table to your collection
 - Remove crew from your collection
-- Update the crew that is in game whenever new crew has been added
+- Update the all crew table with new crew data from the Wiki whenever new crew has been added
 - Sort by any column
-- Filter both tables using the Search function
+- Filter both tables (All crew table and Crew collection table) using the Search function
 - Export the all crew table or the collection table to a HTML, Text or Spreadsheet file
 - Import crew data for the all crew table or the collection table from a Spreadsheet file
 - Update the stats (number of times fused, current level, skills, fully equipped, in vault) of the crew in the collection
 - Press on any Character's Name, Race or Trait and open the corresponding Wiki page
-- Change the font of the tables and the skin of the app
+- Change the font of the tables and the skin of the application
 - View charts and stats about the crew.
 
 <hr>
